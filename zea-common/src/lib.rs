@@ -1,4 +1,4 @@
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, thiserror::Error)]
 pub enum ZeaError<E>
 where
     E: ZeaUserError,
@@ -47,12 +47,19 @@ impl ZeaUserError for std::io::Error {
         }
     }
 }
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, thiserror::Error)]
 pub struct InternalCompilerError {
     pub stage: CompilerStage,
     pub kind: CompilerErrorKind,
 }
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+
+impl std::fmt::Display for InternalCompilerError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.pretty().fmt(f)
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, thiserror::Error)]
 pub struct ZeaErrorMessage {
     pub msg: String,
     pub loc: Option<(usize, usize)>,
@@ -66,10 +73,11 @@ impl InternalCompilerError {
     pub const fn new(stage: CompilerStage, kind: CompilerErrorKind) -> Self {
         Self { stage, kind }
     }
-    pub fn pretty(&self) -> String {
+    pub fn pretty(&self) -> ZeaErrorMessage {
         let s = self.stage;
         let k = &self.kind;
-        format!("INTERNAL COMPILER ERROR: {s:?} : {k:?}")
+        let msg = format!("INTERNAL COMPILER ERROR: {s:?} : {k:?}");
+        ZeaErrorMessage { msg, loc: None }
     }
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

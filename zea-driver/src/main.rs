@@ -7,6 +7,7 @@
 
 use log::{error, info, trace};
 use std::{
+    error::Error,
     fs::{File, read_to_string},
     io::Write,
     path::{Path, PathBuf},
@@ -34,44 +35,42 @@ use zea_parser::parse_module;
 /// In the case of an internal compiler error (ICE),
 /// bail with a message and cause.
 fn error_unpack_ctx<T, UserErr: ZeaUserError>(
-    ccfg: &CompilerConfig,
     res: Result<T, ZeaError<UserErr>>,
     ctx: &UserErr::ZeaUserErrorContext,
-) -> T {
+) -> Result<T, Box<dyn Error>> {
     match res {
-        Ok(t) => t,
+        Ok(t) => Ok(t),
         Err(ZeaError::User(e)) => {
             let msg = e.zea_error_format(ctx);
             error!("ERROR: {msg}");
-            exit(ccfg, 1);
+            Err(Box::new(msg))
         }
         Err(ZeaError::Internal(ice)) => {
             let msg = ice.pretty();
             error!("ERROR: {msg}");
-            exit(ccfg, 2);
+            Err(Box::new(msg))
         }
     }
 }
 
 /// A shorthand for error_unpack for error types whose context type is `()`
 fn error_unpack<T, UserErr>(
-    ccfg: &CompilerConfig,
     res: Result<T, impl Into<ZeaError<UserErr>>>,
-) -> T
+) -> Result<T, Box<dyn Error>>
 where
     UserErr: ZeaUserError<ZeaUserErrorContext = ()>,
 {
-    error_unpack_ctx(ccfg, res.map_err(|e| e.into()), &())
+    error_unpack_ctx(res.map_err(|e| e.into()), &())
 }
 /// 'unwrap' an internal compiler error (ICE),
 /// bail with a message and cause.
-fn error_unpack_ice<T>(ccfg: &CompilerConfig, res: Result<T, InternalCompilerError>) -> T {
+fn error_unpack_ice<T>(res: Result<T, InternalCompilerError>) -> T {
     match res {
         Ok(t) => t,
         Err(ice) => {
             let msg = ice.pretty();
             error!("{msg}");
-            exit(ccfg, 2);
+            zea_exit(2);
         }
     }
 }
@@ -100,7 +99,7 @@ fn invoke_assembler(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Error
         && let Some(code) = status.code()
     {
         error!("GCC returned error code {code}, exiting...");
-        exit(ccfg, code)
+        zea_exit(code)
     }
     info!("saved compiled binary to {}", out_path.display());
     Ok(())
@@ -123,7 +122,7 @@ fn invoke_qbe(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Error>> {
         && let Some(code) = status.code()
     {
         error!("QBE returned error code {code}, exiting...");
-        exit(ccfg, code)
+        zea_exit(code)
     }
     ccfg.log_asmfile_written()?;
     Ok(())
@@ -154,7 +153,7 @@ fn cleanup_artifacts(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Erro
     }
     Ok(())
 }
-fn exit(ccfg: &CompilerConfig, code: i32) -> ! {
+fn zea_exit(code: i32) -> ! {
     error!("exiting...");
     panic!();
     pexit(code)
@@ -165,13 +164,13 @@ fn read_to_string_wrapper(p: &Path) -> Result<String, ZeaError<std::io::Error>> 
     Ok(s)
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let ccfg = CompilerConfig::parse_args();
     colog::basic_builder()
         .filter_level(ccfg.get_log_level())
         .init();
     let src = read_to_string_wrapper(ccfg.get_infile_path());
-    let src = error_unpack_ctx(&ccfg, src, &());
+    let src = error_unpack_ctx(src, &())?;
     let (mut module, labeler) = parse_module(&src);
 
     let mut expander = transformers::AssignmentExpander::from_labeler(labeler);
@@ -184,11 +183,11 @@ fn main() {
 
     let mut scoper = IdentifierScoper::new(&module);
     let status = scoper.scope_module(module);
-    let mut scoped_module = error_unpack_ctx(&ccfg, status, &scoper);
+    let mut scoped_module = error_unpack_ctx(status, &scoper)?;
 
     let mut tc = ZeaTypeChecker::new();
     let status = tc.typecheck_module(&mut scoped_module);
-    error_unpack_ctx(&ccfg, status, &tc);
+    error_unpack_ctx(status, &tc)?;
     let tinfo = tc.finish();
     info!("finished typechecking");
     if ccfg.should_print_ipr() {
@@ -197,21 +196,23 @@ fn main() {
 
     let thr_ctx = THRKeySets::new();
     let status = thr_ctx.lower_module(scoped_module, tinfo, scoper, &ccfg);
-    let lowered = error_unpack_ice(&ccfg, status);
+    let lowered = error_unpack_ice(status);
     if ccfg.should_print_thr() {
         info!("Typed Highlevel Representation:\n{:?}", lowered);
     }
 
     let mut codegen = THRtoQBE::new(&lowered);
-    let qbe = error_unpack_ice(&ccfg, codegen.lower());
+    let qbe = error_unpack_ice(codegen.lower());
     let il = format!("{qbe}");
     if ccfg.should_print_qbe_il() {
         info!("Generated QBE IL:\n{il}");
     }
 
-    error_unpack(&ccfg, write_qbe_il(&ccfg, &il));
+    error_unpack(write_qbe_il(&ccfg, &il))?;
 
-    error_unpack(&ccfg, invoke_qbe(&ccfg));
+    error_unpack(invoke_qbe(&ccfg))?;
 
-    error_unpack(&ccfg, cleanup_artifacts(&ccfg));
+    error_unpack(cleanup_artifacts(&ccfg))?;
+
+    Ok(())
 }
