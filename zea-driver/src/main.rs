@@ -42,23 +42,26 @@ fn error_unpack_ctx<T, UserErr: ZeaUserError>(
         Ok(t) => t,
         Err(ZeaError::User(e)) => {
             let msg = e.zea_error_format(ctx);
-            error!("{msg}");
+            error!("ERROR: {msg}");
             exit(ccfg, 1);
         }
         Err(ZeaError::Internal(ice)) => {
             let msg = ice.pretty();
-            error!("{msg}");
+            error!("ERROR: {msg}");
             exit(ccfg, 2);
         }
     }
 }
 
 /// A shorthand for error_unpack for error types whose context type is `()`
-fn error_unpack<T, UserErr>(ccfg: &CompilerConfig, res: Result<T, ZeaError<UserErr>>) -> T
+fn error_unpack<T, UserErr>(
+    ccfg: &CompilerConfig,
+    res: Result<T, impl Into<ZeaError<UserErr>>>,
+) -> T
 where
     UserErr: ZeaUserError<ZeaUserErrorContext = ()>,
 {
-    error_unpack_ctx(ccfg, res, &())
+    error_unpack_ctx(ccfg, res.map_err(|e| e.into()), &())
 }
 /// 'unwrap' an internal compiler error (ICE),
 /// bail with a message and cause.
@@ -80,7 +83,10 @@ fn create_file(filename: &Path) -> (File, PathBuf) {
 }
 
 /// Invoke GCC's assembler and return the path that the artifact got written to.
-fn invoke_assembler(ccfg: &CompilerConfig) -> Result<PathBuf, ZeaError<std::io::Error>> {
+fn invoke_assembler(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Error>> {
+    if !ccfg.invokes_assembler() {
+        return Ok(());
+    }
     let asm_path = ccfg.get_prefixed_asmfile_path()?;
     let out_path = ccfg.get_prefixed_outfile_path()?;
     let status = std::process::Command::new("gcc")
@@ -97,11 +103,11 @@ fn invoke_assembler(ccfg: &CompilerConfig) -> Result<PathBuf, ZeaError<std::io::
         exit(ccfg, code)
     }
     info!("saved compiled binary to {}", out_path.display());
-    Ok(out_path)
+    Ok(())
 }
 /// Invoke QBE and return the path that the artifact got written to.
 fn invoke_qbe(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Error>> {
-    if !ccfg.should_invoke_qbe() {
+    if !ccfg.invokes_qbe() {
         return Ok(());
     }
 
@@ -119,13 +125,14 @@ fn invoke_qbe(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Error>> {
         error!("QBE returned error code {code}, exiting...");
         exit(ccfg, code)
     }
-    info!("saved QBE assembly to {}", asmpath.display());
+    ccfg.log_asmfile_written()?;
     Ok(())
 }
 fn write_qbe_il(ccfg: &CompilerConfig, il_str: &str) -> Result<(), ZeaError<std::io::Error>> {
     let qbefile_path = ccfg.get_prefixed_qbefile_path()?;
     let (mut file, _) = create_file(qbefile_path.as_path());
-    file.write_all(il_str.as_bytes()).unwrap();
+    file.write_all(il_str.as_bytes())?;
+    ccfg.log_qbefile_written()?;
     Ok(())
 }
 
@@ -134,13 +141,13 @@ fn cleanup_artifacts(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Erro
     if ccfg.should_keep_files() {
         return Ok(());
     }
-    if !ccfg.defines_asmfile() {
+    if ccfg.invokes_assembler() {
         let asm_path = ccfg.get_prefixed_asmfile_path()?;
         trace!("cleaning up {}", asm_path.display());
         std::fs::remove_file(asm_path)?;
     }
 
-    if !ccfg.defines_qbefile() {
+    if ccfg.invokes_qbe() && !ccfg.defines_qbefile() {
         let qbe_il_path = ccfg.get_prefixed_qbefile_path()?;
         trace!("cleaning up {}", qbe_il_path.display());
         std::fs::remove_file(qbe_il_path)?;
@@ -148,8 +155,8 @@ fn cleanup_artifacts(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Erro
     Ok(())
 }
 fn exit(ccfg: &CompilerConfig, code: i32) -> ! {
-    cleanup_artifacts(ccfg).expect("error while cleaning up artifacts");
     error!("exiting...");
+    panic!();
     pexit(code)
 }
 
@@ -179,7 +186,6 @@ fn main() {
     let status = scoper.scope_module(module);
     let mut scoped_module = error_unpack_ctx(&ccfg, status, &scoper);
 
-    info!("commencing typechecking...");
     let mut tc = ZeaTypeChecker::new();
     let status = tc.typecheck_module(&mut scoped_module);
     error_unpack_ctx(&ccfg, status, &tc);
@@ -189,7 +195,6 @@ fn main() {
         info!("after expansions:\n{}", scoped_module.indent_print(0));
     }
 
-    info!("lowering into THR...");
     let thr_ctx = THRKeySets::new();
     let status = thr_ctx.lower_module(scoped_module, tinfo, scoper, &ccfg);
     let lowered = error_unpack_ice(&ccfg, status);
@@ -207,11 +212,6 @@ fn main() {
     error_unpack(&ccfg, write_qbe_il(&ccfg, &il));
 
     error_unpack(&ccfg, invoke_qbe(&ccfg));
-    let out_path = error_unpack(&ccfg, invoke_assembler(&ccfg));
 
-    info!(
-        "saved compiled binary to {}",
-        out_path.canonicalize().unwrap().display()
-    );
     error_unpack(&ccfg, cleanup_artifacts(&ccfg));
 }

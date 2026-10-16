@@ -1,5 +1,5 @@
 use clap::Parser;
-use log::LevelFilter;
+use log::{LevelFilter, info, trace};
 use std::path::PathBuf;
 #[derive(Parser, Debug)]
 #[command(version, about, name = "zea")]
@@ -21,7 +21,7 @@ pub struct CompilerConfig {
 
     #[arg(long, default_value_t = false)]
     /// Dump the generated QBE-IL
-    print_qbe_il: bool,
+    dump_qbe_il: bool,
 
     #[arg(short = 'o', long = "outfile", default_value = None)]
     /// the filename to write the final object to
@@ -78,7 +78,7 @@ impl CompilerConfig {
         match self.asmfile_path.as_ref() {
             Some(Some(p)) => p.clone(),
             _ => {
-                let mut infile = self.infile_path.clone();
+                let mut infile = self.get_infile_path().clone();
                 infile.set_extension("S");
                 infile
             }
@@ -110,8 +110,9 @@ impl CompilerConfig {
     }
     /// Get the filename of the to-emit QBE-IL file, prefixed with the artifact directory
     pub fn get_prefixed_qbefile_path(&self) -> std::io::Result<PathBuf> {
-        let outdir = self.out_dir()?;
-        Ok(outdir.join(self.get_qbefile_name()))
+        let mut outdir = self.out_dir()?;
+        outdir.push(self.get_qbefile_name());
+        Ok(normalize_unix_path(outdir))
     }
     /// Returns true if the ccfg defined a QBE-IL file name
     pub fn defines_qbefile(&self) -> bool {
@@ -119,8 +120,9 @@ impl CompilerConfig {
     }
     /// Get the filename of the to-emit assembly file, prefixed with the artifact directory
     pub fn get_prefixed_asmfile_path(&self) -> std::io::Result<PathBuf> {
-        let outdir = self.out_dir()?;
-        Ok(outdir.join(self.get_asmfile_name()))
+        let mut outdir = self.out_dir()?;
+        outdir.push(self.get_asmfile_name());
+        Ok(normalize_unix_path(outdir))
     }
     /// Returns true if the ccfg defined an assembly file name
     pub fn defines_asmfile(&self) -> bool {
@@ -128,8 +130,9 @@ impl CompilerConfig {
     }
     /// Get the filename of the to-emit ouput object, prefixed with the artifact directory
     pub fn get_prefixed_outfile_path(&self) -> std::io::Result<PathBuf> {
-        let outdir = self.out_dir()?;
-        Ok(outdir.join(self.get_outfile_name()))
+        let mut outdir = self.out_dir()?;
+        outdir.push(self.get_outfile_name());
+        Ok(normalize_unix_path(outdir))
     }
 
     /// Returns true if the expanded IPR should be dumped
@@ -139,7 +142,7 @@ impl CompilerConfig {
 
     /// Returns true if generated QBE-IL should be dumped
     pub fn should_print_qbe_il(&self) -> bool {
-        self.print_qbe_il
+        self.dump_qbe_il
     }
 
     /// get the type of object that this compilation unit should compile to
@@ -148,21 +151,41 @@ impl CompilerConfig {
     }
     /// Get the artifact directory, or the CWD if none is specified
     pub fn out_dir(&self) -> std::io::Result<PathBuf> {
-        match &self.out_dir {
-            Some(path) => Ok(path.clone()),
-            None => std::env::current_dir(),
-        }
+        let p = match &self.out_dir {
+            Some(path) => path.clone(),
+            None => PathBuf::new().join("."),
+        };
+        Ok(p)
     }
     /// Returns true if the generated assembly and QBE files should not be deleted.
     pub fn should_keep_files(&self) -> bool {
         self.keep_files
     }
 
-    pub fn should_invoke_qbe(&self) -> bool {
+    pub fn invokes_qbe(&self) -> bool {
         self.emit >= ModuleEmissionType::QBE
     }
-    pub fn should_invoke_assembler(&self) -> bool {
+    pub fn invokes_assembler(&self) -> bool {
         self.emit >= ModuleEmissionType::ASM
+    }
+
+    pub fn log_qbefile_written(&self) -> Result<(), std::io::Error> {
+        let qbepath = self.get_prefixed_qbefile_path()?;
+        if self.defines_qbefile() {
+            info!("saved QBE IL to {}", qbepath.display());
+        } else {
+            trace!("saved QBE IL to {}", qbepath.display());
+        }
+        Ok(())
+    }
+    pub fn log_asmfile_written(&self) -> Result<(), std::io::Error> {
+        let asmpath = self.get_prefixed_asmfile_path()?;
+        if self.defines_asmfile() {
+            info!("saved assembly to {}", asmpath.display());
+        } else {
+            trace!("saved assembly to {}", asmpath.display());
+        }
+        Ok(())
     }
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, clap::ValueEnum, Default)]
@@ -185,4 +208,14 @@ pub enum ModuleEmissionType {
     ASM = 2,
     /// The compilation unit should be compiled all the way to an ELF object
     ObjectFile = 3,
+}
+
+fn normalize_unix_path(p: PathBuf) -> PathBuf {
+    let p = p
+        .into_os_string()
+        .into_string()
+        .map_err(PathBuf::from)
+        .unwrap();
+    let p = p.replace("/./", "/");
+    p.into()
 }

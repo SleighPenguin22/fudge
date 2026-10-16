@@ -14,7 +14,6 @@ use zea_irs::ast::BareNodeLabeler;
 use zea_irs::ast::ipr::*;
 pub fn parse_module(src: &'_ str) -> (IPRModule, BareNodeLabeler) {
     let p = ModuleParser::new();
-    info!("parsing source file...");
     let mut module = match p.parse(src) {
         Ok(module) => module,
         Err(e) => {

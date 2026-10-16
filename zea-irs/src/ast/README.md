@@ -122,3 +122,7 @@ let val = make_binop(op, l_val, r_val);
 let init = make_init(assignee, val);
 l_pre.push(init);
 ```
+
+This `pre` approach seems to me like a code smell, and I plan to refactor this into a
+`&mut Vector<THRStatementID>` that is threaded through the calls,
+this might even improve cache locality (no need to constantly construct new vectors)?
