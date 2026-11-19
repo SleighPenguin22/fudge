@@ -1,7 +1,8 @@
 /// The AST's for the ZEA language
 pub mod ast;
 mod typecheck;
-pub use typecheck::{ZeaTypeChecker, typecheck_module};
+pub use typecheck::FudgeTypeChecker;
+pub use typecheck::typecheck_module;
 mod impls;
 pub mod visualisation;
 
@@ -97,7 +98,7 @@ pub mod attributes {
     //! Like if they should be a candidate for dead code elimination,
     //! if a function is hot or cold, etc.
     //!
-    //! Zea Attributes in some cases cascade into children items.
+    //! Fudge Attributes in some cases cascade into children items.
     //! As such, deriving the attributes for some item goes as follows:
     //! - start with the default attributes for this item
     //! - inherit applicable attributes from the parent item
@@ -109,38 +110,38 @@ pub mod attributes {
     #![allow(unused)]
     use arbitrary::Arbitrary;
     pub trait AttrListLike: Default {
-        fn from_attr_list(list: Vec<ZeaAttribute>) -> Self {
+        fn from_attr_list(list: Vec<Attribute>) -> Self {
             let mut s = Self::default();
             s.update_from_attr_list(list);
             s
         }
-        fn update_from_attr_list(&mut self, list: Vec<ZeaAttribute>);
-        fn as_attr_list(&self) -> Vec<ZeaAttribute>;
+        fn update_from_attr_list(&mut self, list: Vec<Attribute>);
+        fn as_attr_list(&self) -> Vec<Attribute>;
     }
     #[derive(Debug, Clone, Arbitrary)]
-    pub struct IPRModuleAttributes {
+    pub struct FudgeModuleAttributes {
         /// Should chid items be applicable for dead code elimination?
         cascade_keep: KeepAttribute,
     }
 
-    impl Default for IPRModuleAttributes {
+    impl Default for FudgeModuleAttributes {
         fn default() -> Self {
             Self {
                 cascade_keep: KeepAttribute::EliminateUnused,
             }
         }
     }
-    impl AttrListLike for IPRModuleAttributes {
-        fn update_from_attr_list(&mut self, list: Vec<ZeaAttribute>) {
+    impl AttrListLike for FudgeModuleAttributes {
+        fn update_from_attr_list(&mut self, list: Vec<Attribute>) {
             for attr in list {
-                if let ZeaAttribute::Keep(keep) = attr {
+                if let Attribute::Keep(keep) = attr {
                     self.cascade_keep = keep;
                     return;
                 }
             }
         }
-        fn as_attr_list(&self) -> Vec<ZeaAttribute> {
-            vec![ZeaAttribute::Keep(self.cascade_keep)]
+        fn as_attr_list(&self) -> Vec<Attribute> {
+            vec![Attribute::Keep(self.cascade_keep)]
         }
     }
 
@@ -162,32 +163,32 @@ pub mod attributes {
         }
     }
     impl AttrListLike for IPRStructAttributes {
-        fn update_from_attr_list(&mut self, list: Vec<ZeaAttribute>) {
+        fn update_from_attr_list(&mut self, list: Vec<Attribute>) {
             for attr in list {
                 match attr {
-                    ZeaAttribute::Align(type_alignment) => {
+                    Attribute::Align(type_alignment) => {
                         self.alignment = type_alignment;
                     }
-                    ZeaAttribute::Ordering(struct_field_ordering) => {
+                    Attribute::Ordering(struct_field_ordering) => {
                         self.field_order = struct_field_ordering;
                     }
-                    ZeaAttribute::Keep(keep) => {
+                    Attribute::Keep(keep) => {
                         self.keep = keep;
                     }
                     _ => {}
                 }
             }
         }
-        fn as_attr_list(&self) -> Vec<ZeaAttribute> {
+        fn as_attr_list(&self) -> Vec<Attribute> {
             vec![
-                ZeaAttribute::Ordering(self.field_order),
-                ZeaAttribute::Align(self.alignment),
-                ZeaAttribute::Keep(self.keep),
+                Attribute::Ordering(self.field_order),
+                Attribute::Align(self.alignment),
+                Attribute::Keep(self.keep),
             ]
         }
     }
     #[derive(Debug, Copy, Clone, Arbitrary, PartialEq, Eq, Hash)]
-    pub struct ZeaFunctionAttributes {
+    pub struct FudgeFunctionAttributes {
         /// should this function be inlined?
         inline: InlineAttribute,
         /// is this function called often?
@@ -199,7 +200,7 @@ pub mod attributes {
         must_use: MustUseAttribute,
     }
 
-    impl Default for ZeaFunctionAttributes {
+    impl Default for FudgeFunctionAttributes {
         fn default() -> Self {
             Self {
                 inline: InlineAttribute::AsNecessary,
@@ -209,32 +210,32 @@ pub mod attributes {
             }
         }
     }
-    impl AttrListLike for ZeaFunctionAttributes {
-        fn update_from_attr_list(&mut self, list: Vec<ZeaAttribute>) {
+    impl AttrListLike for FudgeFunctionAttributes {
+        fn update_from_attr_list(&mut self, list: Vec<Attribute>) {
             for attr in list {
                 match attr {
-                    ZeaAttribute::Inline(inline_attribute) => {
+                    Attribute::Inline(inline_attribute) => {
                         self.inline = inline_attribute;
                     }
-                    ZeaAttribute::Temperature(temperature_attribute) => {
+                    Attribute::Temperature(temperature_attribute) => {
                         self.temperature = temperature_attribute;
                     }
-                    ZeaAttribute::MustUse(must_use_attribute) => {
+                    Attribute::MustUse(must_use_attribute) => {
                         self.must_use = must_use_attribute;
                     }
-                    ZeaAttribute::Keep(keep_attribute) => {
+                    Attribute::Keep(keep_attribute) => {
                         self.keep = keep_attribute;
                     }
                     _ => {}
                 }
             }
         }
-        fn as_attr_list(&self) -> Vec<ZeaAttribute> {
+        fn as_attr_list(&self) -> Vec<Attribute> {
             vec![
-                ZeaAttribute::Inline(self.inline),
-                ZeaAttribute::Temperature(self.temperature),
-                ZeaAttribute::Keep(self.keep),
-                ZeaAttribute::MustUse(self.must_use),
+                Attribute::Inline(self.inline),
+                Attribute::Temperature(self.temperature),
+                Attribute::Keep(self.keep),
+                Attribute::MustUse(self.must_use),
             ]
         }
     }
@@ -244,16 +245,16 @@ pub mod attributes {
         temperature: TemperatureAttribute,
     }
     impl AttrListLike for IPRBlockAttributes {
-        fn update_from_attr_list(&mut self, list: Vec<ZeaAttribute>) {
+        fn update_from_attr_list(&mut self, list: Vec<Attribute>) {
             for attr in list {
-                if let ZeaAttribute::Temperature(t) = attr {
+                if let Attribute::Temperature(t) = attr {
                     self.temperature = t;
                     return;
                 }
             }
         }
-        fn as_attr_list(&self) -> Vec<ZeaAttribute> {
-            vec![ZeaAttribute::Temperature(self.temperature)]
+        fn as_attr_list(&self) -> Vec<Attribute> {
+            vec![Attribute::Temperature(self.temperature)]
         }
     }
     #[derive(Default, Debug, Copy, Clone, Arbitrary, PartialEq, Eq)]
@@ -274,16 +275,16 @@ pub mod attributes {
         }
     }
     impl AttrListLike for IPRBranchAttributes {
-        fn update_from_attr_list(&mut self, list: Vec<ZeaAttribute>) {
+        fn update_from_attr_list(&mut self, list: Vec<Attribute>) {
             for attr in list {
-                if let ZeaAttribute::Temperature(t) = attr {
+                if let Attribute::Temperature(t) = attr {
                     self.taken_path_temperature = t;
                     return;
                 }
             }
         }
-        fn as_attr_list(&self) -> Vec<ZeaAttribute> {
-            vec![ZeaAttribute::Temperature(self.taken_path_temperature)]
+        fn as_attr_list(&self) -> Vec<Attribute> {
+            vec![Attribute::Temperature(self.taken_path_temperature)]
         }
     }
 
@@ -327,7 +328,7 @@ pub mod attributes {
         MayDiscard,
         MustUse,
     }
-    pub enum ZeaAttribute {
+    pub enum Attribute {
         Inline(InlineAttribute),
         Align(AlignmentAttribute),
         Ordering(FieldOrderAttribute),
@@ -351,20 +352,20 @@ pub mod attributes {
     pub fn parse_raw_attribute(
         key: String,
         value: Option<String>,
-    ) -> Result<ZeaAttribute, AttributeParseError> {
+    ) -> Result<Attribute, AttributeParseError> {
         match value {
             Some(value) => parse_raw_keyful_attribute(key, value),
             None => parse_raw_keyless_attribute(key),
         }
     }
 
-    fn parse_raw_keyless_attribute(key: String) -> Result<ZeaAttribute, AttributeParseError> {
+    fn parse_raw_keyless_attribute(key: String) -> Result<Attribute, AttributeParseError> {
         match key.as_str() {
-            "inline" => Ok(ZeaAttribute::Inline(InlineAttribute::Always)),
-            "hot" => Ok(ZeaAttribute::Temperature(TemperatureAttribute::Hot)),
-            "cold" => Ok(ZeaAttribute::Temperature(TemperatureAttribute::Cold)),
-            "must-use" => Ok(ZeaAttribute::MustUse(MustUseAttribute::MayDiscard)),
-            "keep-unused" => Ok(ZeaAttribute::Keep(KeepAttribute::Keep)),
+            "inline" => Ok(Attribute::Inline(InlineAttribute::Always)),
+            "hot" => Ok(Attribute::Temperature(TemperatureAttribute::Hot)),
+            "cold" => Ok(Attribute::Temperature(TemperatureAttribute::Cold)),
+            "must-use" => Ok(Attribute::MustUse(MustUseAttribute::MayDiscard)),
+            "keep-unused" => Ok(Attribute::Keep(KeepAttribute::Keep)),
             _ => Err(AttributeParseError::InvalidKey(key)),
         }
     }
@@ -372,13 +373,13 @@ pub mod attributes {
     fn parse_raw_keyful_attribute(
         key: String,
         value: String,
-    ) -> Result<ZeaAttribute, AttributeParseError> {
+    ) -> Result<Attribute, AttributeParseError> {
         match (key.as_str(), value.as_str()) {
-            ("inline", "always") => Ok(ZeaAttribute::Inline(InlineAttribute::Always)),
-            ("inline", "never") => Ok(ZeaAttribute::Inline(InlineAttribute::Never)),
+            ("inline", "always") => Ok(Attribute::Inline(InlineAttribute::Always)),
+            ("inline", "never") => Ok(Attribute::Inline(InlineAttribute::Never)),
             ("inline", _) => Err(AttributeParseError::InvalidValueForKey(key, value)),
-            ("fields", "desc") => Ok(ZeaAttribute::Ordering(FieldOrderAttribute::Descending)),
-            ("fields", "c") => Ok(ZeaAttribute::Ordering(FieldOrderAttribute::Naive)),
+            ("fields", "desc") => Ok(Attribute::Ordering(FieldOrderAttribute::Descending)),
+            ("fields", "c") => Ok(Attribute::Ordering(FieldOrderAttribute::Naive)),
             ("fields", _) => Err(AttributeParseError::InvalidValueForKey(key, value)),
             _ => Err(AttributeParseError::InvalidKey(key)),
         }

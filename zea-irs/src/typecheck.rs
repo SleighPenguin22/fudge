@@ -137,7 +137,7 @@ use crate::{
     visualisation::IndentPrint,
 };
 pub fn typecheck_module(
-    mut tc: ZeaTypeChecker,
+    mut tc: FudgeTypeChecker,
     module: &mut IPRModule,
 ) -> TypeCheckResult<IPRModuleTypeInfo> {
     tc.introduce_module(module)
@@ -402,8 +402,8 @@ pub struct IPRModuleTypeInfo {
     node_types: HashMap<NodeId, InternedType>,
 }
 
-impl From<ZeaTypeChecker> for IPRModuleTypeInfo {
-    fn from(value: ZeaTypeChecker) -> Self {
+impl From<FudgeTypeChecker> for IPRModuleTypeInfo {
+    fn from(value: FudgeTypeChecker) -> Self {
         Self {
             type_interning_table: value.interned_types.interned_types,
             node_types: value.node_types,
@@ -423,8 +423,8 @@ impl IPRModuleTypeInfo {
 }
 
 impl zea_common::ZeaUserError for TypeCheckError {
-    type ZeaUserErrorContext = ZeaTypeChecker;
-    fn zea_error_format(&self, ctx: &ZeaTypeChecker) -> ZeaErrorMessage {
+    type ZeaUserErrorContext = FudgeTypeChecker;
+    fn zea_error_format(&self, ctx: &FudgeTypeChecker) -> ZeaErrorMessage {
         match self {
             Self::IllegalTypeCoercion(a, b, kind) => {
                 let t_a = ctx.interned_types.get_specifier_by_id(*a);
@@ -443,7 +443,7 @@ impl zea_common::ZeaUserError for TypeCheckError {
     }
 }
 
-pub struct ZeaTypeChecker {
+pub struct FudgeTypeChecker {
     /// intern types
     interned_types: InternConcreteTypes,
     /// Keep track of which type variable solves to which concrete type
@@ -460,7 +460,7 @@ pub struct ZeaTypeChecker {
 // ================================================================================================
 // util
 // ================================================================================================
-impl ZeaTypeChecker {
+impl FudgeTypeChecker {
     pub fn new() -> Self {
         Self {
             interned_types: InternConcreteTypes::with_builtin_types(),
@@ -635,7 +635,7 @@ impl ZeaTypeChecker {
 // ================================================================================================
 // introduce_ methods
 // ================================================================================================
-impl ZeaTypeChecker {
+impl FudgeTypeChecker {
     /// recursively generate typevars for the given assignment block
     fn introduce_assignment_block(
         &mut self,
@@ -787,7 +787,7 @@ impl ZeaTypeChecker {
 // ================================================================================================
 // infer_ methods
 // ================================================================================================
-impl ZeaTypeChecker {
+impl FudgeTypeChecker {
     fn infer_expression(&mut self, expr: &IPRExpression) -> TypeCheckResult<TypeVariable> {
         let expr_tvar = self.get_node_tvar(expr.id);
         if self.get_solved_typespec(expr_tvar).is_ok() {
@@ -939,7 +939,7 @@ impl ZeaTypeChecker {
 // ================================================================================================
 // check_ methods
 // ================================================================================================
-impl ZeaTypeChecker {
+impl FudgeTypeChecker {
     pub fn check_module(&mut self, module: &mut IPRModule) -> TypeCheckResult<()> {
         self.introduce_module(module)?;
         self.trace_solved_stats();
@@ -1108,7 +1108,7 @@ impl ZeaTypeChecker {
 // ================================================================================================
 // tracing
 // ================================================================================================
-impl ZeaTypeChecker {
+impl FudgeTypeChecker {
     /// TRACE-print a message about having insufficient info to solve a type variable
     fn trace_insufficient_info_for_solving(&self, t: TypeVariable) {
         trace!("\tinsufficient information to solve type variable {t:?}, moving on...");
@@ -1239,15 +1239,15 @@ mod tests {
         let f64 = IPRTypeSpecifier::t_F64();
 
         for t in BUILTIN_SCALAR_TYPES.iter() {
-            assert_eq!(ZeaTypeChecker::try_coerce_types(t, t), Ok(t));
-            assert_eq!(ZeaTypeChecker::try_coerce_types(&never, t), Ok(t));
+            assert_eq!(FudgeTypeChecker::try_coerce_types(t, t), Ok(t));
+            assert_eq!(FudgeTypeChecker::try_coerce_types(&never, t), Ok(t));
             if t != &unit {
                 assert_eq!(
-                    ZeaTypeChecker::try_coerce_types(&unit, t),
+                    FudgeTypeChecker::try_coerce_types(&unit, t),
                     Err(IllegalTypeCoercionKind::InconvertibleTypes)
                 );
                 assert_eq!(
-                    ZeaTypeChecker::try_coerce_types(t, &unit),
+                    FudgeTypeChecker::try_coerce_types(t, &unit),
                     Err(IllegalTypeCoercionKind::InconvertibleTypes)
                 );
             }
@@ -1276,7 +1276,7 @@ mod tests {
             (&ptr_u8, &ptr_i8, Err(IllegalTypeCoercionKind::PointerCast)),
         ];
         for (from, to, res) in cases {
-            assert_eq!(ZeaTypeChecker::try_coerce_types(from, to), res);
+            assert_eq!(FudgeTypeChecker::try_coerce_types(from, to), res);
         }
     }
 }

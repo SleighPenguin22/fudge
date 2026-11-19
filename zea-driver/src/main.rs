@@ -16,7 +16,7 @@ use std::{
 use tempfile::NamedTempFile;
 use zea_clargs::CompilerConfig;
 use zea_codegen::THRtoQBE;
-use zea_common::{InternalCompilerError, ZeaError, ZeaUserError};
+use zea_common::{FudgeError, InternalCompilerError, UserError};
 use zea_irs::ast::{
     NodeLabeler,
     ipr_walkers::{
@@ -26,7 +26,7 @@ use zea_irs::ast::{
     thr::{THRKeySets, THRModule},
 };
 use zea_irs::visualisation::IndentPrint;
-use zea_irs::{ZeaTypeChecker, typecheck_module};
+use zea_irs::{FudgeTypeChecker, typecheck_module};
 use zea_parser::parse_module;
 
 /// 'unwrap' an error, providing context that the user-error needs
@@ -34,18 +34,18 @@ use zea_parser::parse_module;
 ///
 /// In the case of an internal compiler error (ICE),
 /// bail with a message and cause.
-fn error_unpack_ctx<T, UserErr: ZeaUserError>(
-    res: Result<T, ZeaError<UserErr>>,
-    ctx: &UserErr::ZeaUserErrorContext,
+fn error_unpack_ctx<T, UserErr: UserError>(
+    res: Result<T, FudgeError<UserErr>>,
+    ctx: &UserErr::ErrorContext,
 ) -> Result<T, Box<dyn Error>> {
     match res {
         Ok(t) => Ok(t),
-        Err(ZeaError::User(e)) => {
+        Err(FudgeError::User(e)) => {
             let msg = e.zea_error_format(ctx);
             error!("ERROR: {msg}");
             Err(Box::new(msg))
         }
-        Err(ZeaError::Internal(ice)) => {
+        Err(FudgeError::Internal(ice)) => {
             let msg = ice.pretty();
             error!("ERROR: {msg}");
             Err(Box::new(msg))
@@ -55,10 +55,10 @@ fn error_unpack_ctx<T, UserErr: ZeaUserError>(
 
 /// A shorthand for error_unpack for error types whose context type is `()`
 fn error_unpack<T, UserErr>(
-    res: Result<T, impl Into<ZeaError<UserErr>>>,
+    res: Result<T, impl Into<FudgeError<UserErr>>>,
 ) -> Result<T, Box<dyn Error>>
 where
-    UserErr: ZeaUserError<ZeaUserErrorContext = ()>,
+    UserErr: UserError<ErrorContext = ()>,
 {
     error_unpack_ctx(res.map_err(|e| e.into()), &())
 }
@@ -82,7 +82,7 @@ fn create_file(filename: &Path) -> (File, PathBuf) {
 }
 
 /// Invoke GCC's assembler and return the path that the artifact got written to.
-fn invoke_assembler(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Error>> {
+fn invoke_assembler(ccfg: &CompilerConfig) -> Result<(), FudgeError<std::io::Error>> {
     if !ccfg.invokes_assembler() {
         return Ok(());
     }
@@ -105,7 +105,7 @@ fn invoke_assembler(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Error
     Ok(())
 }
 /// Invoke QBE and return the path that the artifact got written to.
-fn invoke_qbe(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Error>> {
+fn invoke_qbe(ccfg: &CompilerConfig) -> Result<(), FudgeError<std::io::Error>> {
     if !ccfg.invokes_qbe() {
         return Ok(());
     }
@@ -127,7 +127,7 @@ fn invoke_qbe(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Error>> {
     ccfg.log_asmfile_written()?;
     Ok(())
 }
-fn write_qbe_il(ccfg: &CompilerConfig, il_str: &str) -> Result<(), ZeaError<std::io::Error>> {
+fn write_qbe_il(ccfg: &CompilerConfig, il_str: &str) -> Result<(), FudgeError<std::io::Error>> {
     let qbefile_path = ccfg.get_prefixed_qbefile_path()?;
     let (mut file, _) = create_file(qbefile_path.as_path());
     file.write_all(il_str.as_bytes())?;
@@ -136,7 +136,7 @@ fn write_qbe_il(ccfg: &CompilerConfig, il_str: &str) -> Result<(), ZeaError<std:
 }
 
 /// remove any artifact that the config specified not to keep.
-fn cleanup_artifacts(ccfg: &CompilerConfig) -> Result<(), ZeaError<std::io::Error>> {
+fn cleanup_artifacts(ccfg: &CompilerConfig) -> Result<(), FudgeError<std::io::Error>> {
     if ccfg.should_keep_files() {
         return Ok(());
     }
@@ -159,7 +159,7 @@ fn zea_exit(code: i32) -> ! {
     pexit(code)
 }
 
-fn read_to_string_wrapper(p: &Path) -> Result<String, ZeaError<std::io::Error>> {
+fn read_to_string_wrapper(p: &Path) -> Result<String, FudgeError<std::io::Error>> {
     let s = read_to_string(p)?;
     Ok(s)
 }
@@ -185,7 +185,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let status = scoper.scope_module(module);
     let mut scoped_module = error_unpack_ctx(status, &scoper)?;
 
-    let mut tc = ZeaTypeChecker::new();
+    let mut tc = FudgeTypeChecker::new();
     let status = tc.typecheck_module(&mut scoped_module);
     error_unpack_ctx(status, &tc)?;
     let tinfo = tc.finish();

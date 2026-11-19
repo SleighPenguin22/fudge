@@ -1,7 +1,7 @@
 use std::str::FromStr;
-use zea_ipr::ast::ipr::*;
-use zea_ipr::attributes::*;
-use zea_ipr::ast::{BinOp, UnOp, NodeId};
+use zea_irs::ast::ipr::*;
+use zea_irs::attributes::*;
+use zea_irs::ast::{BinOp, UnOp, NodeId};
 use crate::{IPRModuleItem, separate_module_items};
 
 grammar;
@@ -29,7 +29,7 @@ TTypedIdent:IPRTypedIdentifier = {
 
 pub Mod: IPRModule = {
     <attrs:AttrList> <name:ModName> <imports:ModImports?> <exports:ModExports?> <(global_vars, functions, struct_definitions, tagged_unions):ModSymbols> => {
-        let mut attributes: IPRModuleAttributes = Default::default();
+        let mut attributes: FudgeModuleAttributes = Default::default();
         attributes.update_from_attr_list(attrs);
         IPRModule {
             attributes,
@@ -53,7 +53,7 @@ RawAttr: (String,Option<String>) = {
 RawAttrList: Vec<(String,Option<String>)> = {
     Comma1<RawAttr>
 }
-AttrList: Vec<ZeaAttribute> = {
+AttrList: Vec<Attribute> = {
     => vec![],
     "@" <RawAttrList> ";"=> {
         let mut v = vec![];
@@ -86,6 +86,7 @@ ModImports: Vec<String> = {
 ModExports: Vec<String> = {
     "exports"  "{" <imps:Comma0<ExprIdent>>  "}"=> imps
 };
+
 #[inline]
 ModSymbols: (
 Vec<IPRInitializationBlock>,
@@ -184,7 +185,7 @@ Func: IPRFunction = {
     "(" <args:Comma0<TTypedIdent>> ")"
     <body:Block> => {
         let params: Vec<IPRFuncParam> = args.into_iter().map(IPRFuncParam::from).collect();
-        let mut attributes: IPRFunctionAttributes = Default::default();
+        let mut attributes: FudgeFunctionAttributes = Default::default();
         attributes.update_from_attr_list(attrs);
         IPRFunction {
             attributes,
@@ -200,7 +201,7 @@ Func: IPRFunction = {
     "(" <args:Comma0<TTypedIdent>> ")"
     "->" <funcreturns:TType> <body:Block> => {
         let params: Vec<IPRFuncParam> = args.into_iter().map(IPRFuncParam::from).collect();
-        let mut attributes: IPRFunctionAttributes = Default::default();
+        let mut attributes: FudgeFunctionAttributes = Default::default();
         attributes.update_from_attr_list(attrs);
         IPRFunction {
             attributes,

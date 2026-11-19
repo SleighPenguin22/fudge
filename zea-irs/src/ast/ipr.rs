@@ -20,7 +20,7 @@ use crate::{
         },
     },
     attributes::{
-        IPRBlockAttributes, IPRBranchAttributes, IPRModuleAttributes, ZeaFunctionAttributes,
+        FudgeModuleAttributes, IPRBlockAttributes, IPRBranchAttributes, ZeaFunctionAttributes,
     },
     impls::StructuralEq,
 };
@@ -178,7 +178,7 @@ impl IPRASTNode<'_> {
 
 #[derive(Default, Debug, Clone, Arbitrary)]
 pub struct IPRModule {
-    pub attributes: IPRModuleAttributes,
+    pub attributes: FudgeModuleAttributes,
     pub id: NodeId,
     pub imports: Vec<String>,
     pub exports: Vec<String>,

@@ -1,47 +1,47 @@
 #[derive(Debug, Clone, thiserror::Error)]
-pub enum ZeaError<E>
+pub enum FudgeError<E>
 where
-    E: ZeaUserError,
+    E: UserError,
 {
     User(E),
     Internal(InternalCompilerError),
 }
 
-impl<E> From<InternalCompilerError> for ZeaError<E>
+impl<E> From<InternalCompilerError> for FudgeError<E>
 where
-    E: ZeaUserError,
+    E: UserError,
 {
     fn from(v: InternalCompilerError) -> Self {
         Self::Internal(v)
     }
 }
 
-impl<UserErr> From<UserErr> for ZeaError<UserErr>
+impl<UserErr> From<UserErr> for FudgeError<UserErr>
 where
-    UserErr: ZeaUserError,
+    UserErr: UserError,
 {
     fn from(v: UserErr) -> Self {
         Self::User(v)
     }
 }
 
-/// A Zea User error that requires some context to print a message
+/// A Fudge User error that requires some context to print a message
 ///
 ///
-pub trait ZeaUserError: Sized {
-    type ZeaUserErrorContext: ?Sized;
-    fn zea_error_format(&self, ctx: &Self::ZeaUserErrorContext) -> ZeaErrorMessage;
-    fn into_zea_error(self) -> ZeaError<Self> {
-        ZeaError::User(self)
+pub trait UserError: Sized {
+    type ErrorContext: ?Sized;
+    fn zea_error_format(&self, ctx: &Self::ErrorContext) -> FudgeErrorMessage;
+    fn into_zea_error(self) -> FudgeError<Self> {
+        FudgeError::User(self)
     }
 }
 
-impl ZeaUserError for std::io::Error {
-    type ZeaUserErrorContext = ();
+impl UserError for std::io::Error {
+    type ErrorContext = ();
 
-    fn zea_error_format(&self, _ctx: &Self::ZeaUserErrorContext) -> ZeaErrorMessage {
+    fn zea_error_format(&self, _ctx: &Self::ErrorContext) -> FudgeErrorMessage {
         let kind = self.kind();
-        ZeaErrorMessage {
+        FudgeErrorMessage {
             msg: kind.to_string(),
             loc: None,
         }
@@ -60,11 +60,11 @@ impl std::fmt::Display for InternalCompilerError {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, thiserror::Error)]
-pub struct ZeaErrorMessage {
+pub struct FudgeErrorMessage {
     pub msg: String,
     pub loc: Option<(usize, usize)>,
 }
-impl std::fmt::Display for ZeaErrorMessage {
+impl std::fmt::Display for FudgeErrorMessage {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         self.msg.fmt(f)
     }
@@ -73,11 +73,11 @@ impl InternalCompilerError {
     pub const fn new(stage: CompilerStage, kind: CompilerErrorKind) -> Self {
         Self { stage, kind }
     }
-    pub fn pretty(&self) -> ZeaErrorMessage {
+    pub fn pretty(&self) -> FudgeErrorMessage {
         let s = self.stage;
         let k = &self.kind;
         let msg = format!("INTERNAL COMPILER ERROR: {s:?} : {k:?}");
-        ZeaErrorMessage { msg, loc: None }
+        FudgeErrorMessage { msg, loc: None }
     }
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -105,7 +105,7 @@ pub enum CompilerErrorKind {
     NoEntryPoint,
 }
 
-type ZeaResult<T, E> = Result<T, ZeaError<E>>;
+type ZeaResult<T, E> = Result<T, FudgeError<E>>;
 
 #[macro_export]
 macro_rules! ice_bail {

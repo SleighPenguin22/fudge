@@ -1,5 +1,6 @@
-// auto-generated: "lalrpop 0.23.1"
-// sha3: 217d245df90b14e55f0bab47a26f9650d009395ed79f22097f0ca290bf3dae39
+// auto-generated: "lalrpop 0.23.2"
+// sha3: 83fd93baed0addfec1b6faac93b0ee25fbe80c9609db2b68a29056b0420ab842
+// features: default,lalrpop-parser
 use std::str::FromStr;
 use zea_irs::ast::ipr::*;
 use zea_irs::attributes::*;
@@ -44,7 +45,7 @@ mod __parse__Mod {
         Variant10(alloc::vec::Vec<IPRTypedIdentifier>),
         Variant11(IPRStatement),
         Variant12(alloc::vec::Vec<IPRStatement>),
-        Variant13(Vec<ZeaAttribute>),
+        Variant13(Vec<Attribute>),
         Variant14(IPRBlockExpression),
         Variant15(Vec<IPRExpression>),
         Variant16(Vec<String>),
@@ -3142,6 +3143,17 @@ mod __parse__Mod {
             _ => __symbol_type_mismatch()
         }
     }
+    fn __pop_Variant13<
+      'input,
+    >(
+        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<'input>,usize)>
+    ) -> (usize, Vec<Attribute>, usize)
+     {
+        match __symbols.pop() {
+            Some((__l, __Symbol::Variant13(__v), __r)) => (__l, __v, __r),
+            _ => __symbol_type_mismatch()
+        }
+    }
     fn __pop_Variant18<
       'input,
     >(
@@ -3194,17 +3206,6 @@ mod __parse__Mod {
      {
         match __symbols.pop() {
             Some((__l, __Symbol::Variant16(__v), __r)) => (__l, __v, __r),
-            _ => __symbol_type_mismatch()
-        }
-    }
-    fn __pop_Variant13<
-      'input,
-    >(
-        __symbols: &mut alloc::vec::Vec<(usize,__Symbol<'input>,usize)>
-    ) -> (usize, Vec<ZeaAttribute>, usize)
-     {
-        match __symbols.pop() {
-            Some((__l, __Symbol::Variant13(__v), __r)) => (__l, __v, __r),
             _ => __symbol_type_mismatch()
         }
     }
@@ -3346,8 +3347,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // ("," <AssignPatInner>)* =  => ActionFn(109);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action109::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant2(__nt), __end));
         (0, 1)
@@ -3480,8 +3481,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // ("," <Expr>)* =  => ActionFn(112);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action112::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant4(__nt), __end));
         (0, 4)
@@ -3571,8 +3572,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // ("," <ExprIdent>)* =  => ActionFn(106);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action106::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant6(__nt), __end));
         (0, 7)
@@ -3683,8 +3684,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // ("," <RawAttr>)* =  => ActionFn(103);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action103::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant8(__nt), __end));
         (0, 10)
@@ -3817,8 +3818,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // ("," <TTypedIdent>)* =  => ActionFn(115);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action115::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant10(__nt), __end));
         (0, 13)
@@ -3906,8 +3907,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // (<Stmt>)* =  => ActionFn(88);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action88::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant12(__nt), __end));
         (0, 16)
@@ -4069,8 +4070,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // AttrList =  => ActionFn(6);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action6::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant13(__nt), __end));
         (0, 20)
@@ -4185,8 +4186,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // Comma0<Expr> =  => ActionFn(93);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action93::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant15(__nt), __end));
         (0, 22)
@@ -4237,8 +4238,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // Comma0<ExprIdent> =  => ActionFn(96);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action96::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant16(__nt), __end));
         (0, 23)
@@ -4289,8 +4290,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // Comma0<TTypedIdent> =  => ActionFn(91);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action91::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant17(__nt), __end));
         (0, 24)
@@ -4571,8 +4572,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // Expr? =  => ActionFn(87);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action87::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant21(__nt), __end));
         (0, 29)
@@ -5748,8 +5749,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // ModExports? =  => ActionFn(100);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action100::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant26(__nt), __end));
         (0, 50)
@@ -5802,8 +5803,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // ModImports? =  => ActionFn(102);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action102::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant26(__nt), __end));
         (0, 52)
@@ -5854,8 +5855,8 @@ mod __parse__Mod {
     ) -> (usize, usize)
     {
         // ModSymbolsHelper =  => ActionFn(14);
-        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2)).unwrap_or_default();
-        let __end = __start;
+        let __start = __lookahead_start.cloned().or_else(|| __symbols.last().map(|s| s.2.clone())).unwrap_or_default();
+        let __end = __start.clone();
         let __nt = super::__action14::<>(input, &__start, &__end);
         __symbols.push((__start, __Symbol::Variant28(__nt), __end));
         (0, 55)
@@ -6335,7 +6336,7 @@ mod __intern_token {
 pub(crate) use self::__lalrpop_util::lexer::Token;
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action0<
     'input,
 >(
@@ -6347,7 +6348,7 @@ fn __action0<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action1<
     'input,
 >(
@@ -6361,12 +6362,12 @@ fn __action1<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action2<
     'input,
 >(
     input: &'input str,
-    (_, attrs, _): (usize, Vec<ZeaAttribute>, usize),
+    (_, attrs, _): (usize, Vec<Attribute>, usize),
     (_, name, _): (usize, String, usize),
     (_, imports, _): (usize, Option<Vec<String>>, usize),
     (_, exports, _): (usize, Option<Vec<String>>, usize),
@@ -6374,7 +6375,7 @@ fn __action2<
 ) -> IPRModule
 {
     {
-        let mut attributes: IPRModuleAttributes = Default::default();
+        let mut attributes: FudgeModuleAttributes = Default::default();
         attributes.update_from_attr_list(attrs);
         IPRModule {
             attributes,
@@ -6390,7 +6391,7 @@ fn __action2<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action3<
     'input,
 >(
@@ -6402,7 +6403,7 @@ fn __action3<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action4<
     'input,
 >(
@@ -6416,7 +6417,7 @@ fn __action4<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action5<
     'input,
 >(
@@ -6428,20 +6429,20 @@ fn __action5<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action6<
     'input,
 >(
     input: &'input str,
     __lookbehind: &usize,
     __lookahead: &usize,
-) -> Vec<ZeaAttribute>
+) -> Vec<Attribute>
 {
     vec![]
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action7<
     'input,
 >(
@@ -6449,7 +6450,7 @@ fn __action7<
     (_, _, _): (usize, &'input str, usize),
     (_, __0, _): (usize, Vec<(String, Option<String>)>, usize),
     (_, _, _): (usize, &'input str, usize),
-) -> Vec<ZeaAttribute>
+) -> Vec<Attribute>
 {
     {
         let mut v = vec![];
@@ -6463,7 +6464,7 @@ fn __action7<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action8<
     'input,
 >(
@@ -6479,7 +6480,7 @@ fn __action8<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action9<
     'input,
 >(
@@ -6495,7 +6496,7 @@ fn __action9<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action10<
     'input,
 >(
@@ -6508,7 +6509,7 @@ fn __action10<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action11<
     'input,
 >(
@@ -6523,7 +6524,7 @@ fn __action11<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action12<
     'input,
 >(
@@ -6538,7 +6539,7 @@ fn __action12<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action13<
     'input,
 >(
@@ -6550,7 +6551,7 @@ fn __action13<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action14<
     'input,
 >(
@@ -6563,7 +6564,7 @@ fn __action14<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action15<
     'input,
 >(
@@ -6581,7 +6582,7 @@ fn __action15<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action16<
     'input,
 >(
@@ -6599,7 +6600,7 @@ fn __action16<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action17<
     'input,
 >(
@@ -6621,7 +6622,7 @@ fn __action17<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action18<
     'input,
 >(
@@ -6644,7 +6645,7 @@ fn __action18<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action19<
     'input,
 >(
@@ -6656,7 +6657,7 @@ fn __action19<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action20<
     'input,
 >(
@@ -6669,7 +6670,7 @@ fn __action20<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action21<
     'input,
 >(
@@ -6681,7 +6682,7 @@ fn __action21<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action22<
     'input,
 >(
@@ -6695,7 +6696,7 @@ fn __action22<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action23<
     'input,
 >(
@@ -6716,7 +6717,7 @@ fn __action23<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action24<
     'input,
 >(
@@ -6737,12 +6738,12 @@ fn __action24<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action25<
     'input,
 >(
     input: &'input str,
-    (_, attrs, _): (usize, Vec<ZeaAttribute>, usize),
+    (_, attrs, _): (usize, Vec<Attribute>, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, name, _): (usize, String, usize),
     (_, _, _): (usize, &'input str, usize),
@@ -6753,7 +6754,7 @@ fn __action25<
 {
     {
         let params: Vec<IPRFuncParam> = args.into_iter().map(IPRFuncParam::from).collect();
-        let mut attributes: ZeaFunctionAttributes = Default::default();
+        let mut attributes: FudgeFunctionAttributes = Default::default();
         attributes.update_from_attr_list(attrs);
         IPRFunction {
             attributes,
@@ -6767,12 +6768,12 @@ fn __action25<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action26<
     'input,
 >(
     input: &'input str,
-    (_, attrs, _): (usize, Vec<ZeaAttribute>, usize),
+    (_, attrs, _): (usize, Vec<Attribute>, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, name, _): (usize, String, usize),
     (_, _, _): (usize, &'input str, usize),
@@ -6785,7 +6786,7 @@ fn __action26<
 {
     {
         let params: Vec<IPRFuncParam> = args.into_iter().map(IPRFuncParam::from).collect();
-        let mut attributes: ZeaFunctionAttributes = Default::default();
+        let mut attributes: FudgeFunctionAttributes = Default::default();
         attributes.update_from_attr_list(attrs);
         IPRFunction {
             attributes,
@@ -6799,7 +6800,7 @@ fn __action26<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action27<
     'input,
 >(
@@ -6811,7 +6812,7 @@ fn __action27<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action28<
     'input,
 >(
@@ -6824,7 +6825,7 @@ fn __action28<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action29<
     'input,
 >(
@@ -6838,7 +6839,7 @@ fn __action29<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action30<
     'input,
 >(
@@ -6866,7 +6867,7 @@ fn __action30<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action31<
     'input,
 >(
@@ -6885,7 +6886,7 @@ fn __action31<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action32<
     'input,
 >(
@@ -6900,7 +6901,7 @@ fn __action32<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action33<
     'input,
 >(
@@ -6912,7 +6913,7 @@ fn __action33<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action34<
     'input,
 >(
@@ -6925,7 +6926,7 @@ fn __action34<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action35<
     'input,
 >(
@@ -6938,7 +6939,7 @@ fn __action35<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action36<
     'input,
 >(
@@ -6951,7 +6952,7 @@ fn __action36<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action37<
     'input,
 >(
@@ -6963,7 +6964,7 @@ fn __action37<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action38<
     'input,
 >(
@@ -6975,7 +6976,7 @@ fn __action38<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action39<
     'input,
 >(
@@ -6987,7 +6988,7 @@ fn __action39<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action40<
     'input,
 >(
@@ -6999,7 +7000,7 @@ fn __action40<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action41<
     'input,
 >(
@@ -7013,7 +7014,7 @@ fn __action41<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action42<
     'input,
 >(
@@ -7025,7 +7026,7 @@ fn __action42<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action43<
     'input,
 >(
@@ -7039,7 +7040,7 @@ fn __action43<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action44<
     'input,
 >(
@@ -7051,7 +7052,7 @@ fn __action44<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action45<
     'input,
 >(
@@ -7065,7 +7066,7 @@ fn __action45<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action46<
     'input,
 >(
@@ -7077,7 +7078,7 @@ fn __action46<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action47<
     'input,
 >(
@@ -7091,7 +7092,7 @@ fn __action47<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action48<
     'input,
 >(
@@ -7105,7 +7106,7 @@ fn __action48<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action49<
     'input,
 >(
@@ -7119,7 +7120,7 @@ fn __action49<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action50<
     'input,
 >(
@@ -7131,7 +7132,7 @@ fn __action50<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action51<
     'input,
 >(
@@ -7145,7 +7146,7 @@ fn __action51<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action52<
     'input,
 >(
@@ -7159,7 +7160,7 @@ fn __action52<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action53<
     'input,
 >(
@@ -7171,7 +7172,7 @@ fn __action53<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action54<
     'input,
 >(
@@ -7185,7 +7186,7 @@ fn __action54<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action55<
     'input,
 >(
@@ -7199,7 +7200,7 @@ fn __action55<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action56<
     'input,
 >(
@@ -7213,7 +7214,7 @@ fn __action56<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action57<
     'input,
 >(
@@ -7227,7 +7228,7 @@ fn __action57<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action58<
     'input,
 >(
@@ -7239,7 +7240,7 @@ fn __action58<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action59<
     'input,
 >(
@@ -7253,7 +7254,7 @@ fn __action59<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action60<
     'input,
 >(
@@ -7267,7 +7268,7 @@ fn __action60<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action61<
     'input,
 >(
@@ -7279,7 +7280,7 @@ fn __action61<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action62<
     'input,
 >(
@@ -7293,7 +7294,7 @@ fn __action62<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action63<
     'input,
 >(
@@ -7307,7 +7308,7 @@ fn __action63<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action64<
     'input,
 >(
@@ -7319,7 +7320,7 @@ fn __action64<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action65<
     'input,
 >(
@@ -7333,7 +7334,7 @@ fn __action65<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action66<
     'input,
 >(
@@ -7347,7 +7348,7 @@ fn __action66<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action67<
     'input,
 >(
@@ -7361,7 +7362,7 @@ fn __action67<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action68<
     'input,
 >(
@@ -7373,7 +7374,7 @@ fn __action68<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action69<
     'input,
 >(
@@ -7386,7 +7387,7 @@ fn __action69<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action70<
     'input,
 >(
@@ -7399,7 +7400,7 @@ fn __action70<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action71<
     'input,
 >(
@@ -7412,7 +7413,7 @@ fn __action71<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action72<
     'input,
 >(
@@ -7424,7 +7425,7 @@ fn __action72<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action73<
     'input,
 >(
@@ -7436,7 +7437,7 @@ fn __action73<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action74<
     'input,
 >(
@@ -7448,7 +7449,7 @@ fn __action74<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action75<
     'input,
 >(
@@ -7462,7 +7463,7 @@ fn __action75<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action76<
     'input,
 >(
@@ -7477,7 +7478,7 @@ fn __action76<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action77<
     'input,
 >(
@@ -7489,7 +7490,7 @@ fn __action77<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action78<
     'input,
 >(
@@ -7501,7 +7502,7 @@ fn __action78<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action79<
     'input,
 >(
@@ -7513,7 +7514,7 @@ fn __action79<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action80<
     'input,
 >(
@@ -7527,7 +7528,7 @@ fn __action80<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action81<
     'input,
 >(
@@ -7539,7 +7540,7 @@ fn __action81<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action82<
     'input,
 >(
@@ -7551,7 +7552,7 @@ fn __action82<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action83<
     'input,
 >(
@@ -7563,7 +7564,7 @@ fn __action83<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action84<
     'input,
 >(
@@ -7575,7 +7576,7 @@ fn __action84<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action85<
     'input,
 >(
@@ -7587,7 +7588,7 @@ fn __action85<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action86<
     'input,
 >(
@@ -7599,7 +7600,7 @@ fn __action86<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action87<
     'input,
 >(
@@ -7612,7 +7613,7 @@ fn __action87<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action88<
     'input,
 >(
@@ -7625,7 +7626,7 @@ fn __action88<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action89<
     'input,
 >(
@@ -7637,7 +7638,7 @@ fn __action89<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action90<
     'input,
 >(
@@ -7649,7 +7650,7 @@ fn __action90<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action91<
     'input,
 >(
@@ -7662,7 +7663,7 @@ fn __action91<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action92<
     'input,
 >(
@@ -7679,7 +7680,7 @@ fn __action92<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action93<
     'input,
 >(
@@ -7692,7 +7693,7 @@ fn __action93<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action94<
     'input,
 >(
@@ -7709,7 +7710,7 @@ fn __action94<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action95<
     'input,
 >(
@@ -7726,7 +7727,7 @@ fn __action95<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action96<
     'input,
 >(
@@ -7739,7 +7740,7 @@ fn __action96<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action97<
     'input,
 >(
@@ -7756,7 +7757,7 @@ fn __action97<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action98<
     'input,
 >(
@@ -7773,7 +7774,7 @@ fn __action98<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action99<
     'input,
 >(
@@ -7785,7 +7786,7 @@ fn __action99<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action100<
     'input,
 >(
@@ -7798,7 +7799,7 @@ fn __action100<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action101<
     'input,
 >(
@@ -7810,7 +7811,7 @@ fn __action101<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action102<
     'input,
 >(
@@ -7823,7 +7824,7 @@ fn __action102<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action103<
     'input,
 >(
@@ -7836,7 +7837,7 @@ fn __action103<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action104<
     'input,
 >(
@@ -7848,7 +7849,7 @@ fn __action104<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action105<
     'input,
 >(
@@ -7861,7 +7862,7 @@ fn __action105<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action106<
     'input,
 >(
@@ -7874,7 +7875,7 @@ fn __action106<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action107<
     'input,
 >(
@@ -7886,7 +7887,7 @@ fn __action107<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action108<
     'input,
 >(
@@ -7899,7 +7900,7 @@ fn __action108<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action109<
     'input,
 >(
@@ -7912,7 +7913,7 @@ fn __action109<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action110<
     'input,
 >(
@@ -7924,7 +7925,7 @@ fn __action110<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action111<
     'input,
 >(
@@ -7937,7 +7938,7 @@ fn __action111<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action112<
     'input,
 >(
@@ -7950,7 +7951,7 @@ fn __action112<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action113<
     'input,
 >(
@@ -7962,7 +7963,7 @@ fn __action113<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action114<
     'input,
 >(
@@ -7975,7 +7976,7 @@ fn __action114<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action115<
     'input,
 >(
@@ -7988,7 +7989,7 @@ fn __action115<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action116<
     'input,
 >(
@@ -8000,7 +8001,7 @@ fn __action116<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action117<
     'input,
 >(
@@ -8013,7 +8014,7 @@ fn __action117<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action118<
     'input,
 >(
@@ -8025,7 +8026,7 @@ fn __action118<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action119<
     'input,
 >(
@@ -8038,7 +8039,7 @@ fn __action119<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action120<
     'input,
 >(
@@ -8050,7 +8051,7 @@ fn __action120<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action121<
     'input,
 >(
@@ -8063,7 +8064,7 @@ fn __action121<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action122<
     'input,
 >(
@@ -8075,7 +8076,7 @@ fn __action122<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action123<
     'input,
 >(
@@ -8088,7 +8089,7 @@ fn __action123<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action124<
     'input,
 >(
@@ -8100,7 +8101,7 @@ fn __action124<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action125<
     'input,
 >(
@@ -8113,7 +8114,7 @@ fn __action125<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action126<
     'input,
 >(
@@ -8125,7 +8126,7 @@ fn __action126<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action127<
     'input,
 >(
@@ -8138,7 +8139,7 @@ fn __action127<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action128<
     'input,
 >(
@@ -8150,7 +8151,7 @@ fn __action128<
 }
 
 #[allow(unused_variables)]
-#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits)]
+#[allow(clippy::too_many_arguments, clippy::needless_lifetimes, clippy::just_underscores_and_digits, clippy::extra_unused_type_parameters)]
 fn __action129<
     'input,
 >(
@@ -8164,7 +8165,7 @@ fn __action129<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action130<
     'input,
 >(
@@ -8173,8 +8174,8 @@ fn __action130<
     __1: (usize, String, usize),
 ) -> IPRAssignmentPattern
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action21(
         input,
         __1,
@@ -8189,7 +8190,7 @@ fn __action130<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action131<
     'input,
 >(
@@ -8200,8 +8201,8 @@ fn __action131<
     __3: (usize, &'input str, usize),
 ) -> IPRAssignmentPattern
 {
-    let __start0 = __1.0;
-    let __end0 = __3.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __3.2.clone();
     let __temp0 = __action22(
         input,
         __1,
@@ -8218,7 +8219,7 @@ fn __action131<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action132<
     'input,
 >(
@@ -8227,8 +8228,8 @@ fn __action132<
     __1: (usize, String, usize),
 ) -> IPRAssignmentPattern
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action21(
         input,
         __1,
@@ -8243,7 +8244,7 @@ fn __action132<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action133<
     'input,
 >(
@@ -8254,8 +8255,8 @@ fn __action133<
     __3: (usize, &'input str, usize),
 ) -> IPRAssignmentPattern
 {
-    let __start0 = __1.0;
-    let __end0 = __3.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __3.2.clone();
     let __temp0 = __action22(
         input,
         __1,
@@ -8272,7 +8273,7 @@ fn __action133<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action134<
     'input,
 >(
@@ -8281,8 +8282,8 @@ fn __action134<
     __1: (usize, alloc::vec::Vec<IPRAssignmentPattern>, usize),
 ) -> Vec<IPRAssignmentPattern>
 {
-    let __start0 = __0.0;
-    let __end0 = __0.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __0.2.clone();
     let __temp0 = __action21(
         input,
         __0,
@@ -8297,7 +8298,7 @@ fn __action134<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action135<
     'input,
 >(
@@ -8308,8 +8309,8 @@ fn __action135<
     __3: (usize, alloc::vec::Vec<IPRAssignmentPattern>, usize),
 ) -> Vec<IPRAssignmentPattern>
 {
-    let __start0 = __0.0;
-    let __end0 = __2.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action22(
         input,
         __0,
@@ -8326,7 +8327,7 @@ fn __action135<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action136<
     'input,
 >(
@@ -8335,8 +8336,8 @@ fn __action136<
     __1: (usize, String, usize),
 ) -> alloc::vec::Vec<IPRAssignmentPattern>
 {
-    let __start0 = __0.0;
-    let __end0 = __1.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action130(
         input,
         __0,
@@ -8351,7 +8352,7 @@ fn __action136<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action137<
     'input,
 >(
@@ -8362,8 +8363,8 @@ fn __action137<
     __3: (usize, &'input str, usize),
 ) -> alloc::vec::Vec<IPRAssignmentPattern>
 {
-    let __start0 = __0.0;
-    let __end0 = __3.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __3.2.clone();
     let __temp0 = __action131(
         input,
         __0,
@@ -8380,7 +8381,7 @@ fn __action137<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action138<
     'input,
 >(
@@ -8390,8 +8391,8 @@ fn __action138<
     __2: (usize, String, usize),
 ) -> alloc::vec::Vec<IPRAssignmentPattern>
 {
-    let __start0 = __1.0;
-    let __end0 = __2.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action130(
         input,
         __1,
@@ -8407,7 +8408,7 @@ fn __action138<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action139<
     'input,
 >(
@@ -8419,8 +8420,8 @@ fn __action139<
     __4: (usize, &'input str, usize),
 ) -> alloc::vec::Vec<IPRAssignmentPattern>
 {
-    let __start0 = __1.0;
-    let __end0 = __4.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __4.2.clone();
     let __temp0 = __action131(
         input,
         __1,
@@ -8438,7 +8439,7 @@ fn __action139<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action140<
     'input,
 >(
@@ -8446,8 +8447,8 @@ fn __action140<
     __0: (usize, String, usize),
 ) -> Vec<IPRAssignmentPattern>
 {
-    let __start0 = __0.2;
-    let __end0 = __0.2;
+    let __start0 = __0.2.clone();
+    let __end0 = __0.2.clone();
     let __temp0 = __action109(
         input,
         &__start0,
@@ -8463,7 +8464,7 @@ fn __action140<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action141<
     'input,
 >(
@@ -8472,8 +8473,8 @@ fn __action141<
     __1: (usize, alloc::vec::Vec<IPRAssignmentPattern>, usize),
 ) -> Vec<IPRAssignmentPattern>
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action110(
         input,
         __1,
@@ -8488,7 +8489,7 @@ fn __action141<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action142<
     'input,
 >(
@@ -8498,8 +8499,8 @@ fn __action142<
     __2: (usize, &'input str, usize),
 ) -> Vec<IPRAssignmentPattern>
 {
-    let __start0 = __2.2;
-    let __end0 = __2.2;
+    let __start0 = __2.2.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action109(
         input,
         &__start0,
@@ -8517,7 +8518,7 @@ fn __action142<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action143<
     'input,
 >(
@@ -8528,8 +8529,8 @@ fn __action143<
     __3: (usize, alloc::vec::Vec<IPRAssignmentPattern>, usize),
 ) -> Vec<IPRAssignmentPattern>
 {
-    let __start0 = __3.0;
-    let __end0 = __3.2;
+    let __start0 = __3.0.clone();
+    let __end0 = __3.2.clone();
     let __temp0 = __action110(
         input,
         __3,
@@ -8546,7 +8547,7 @@ fn __action143<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action144<
     'input,
 >(
@@ -8555,8 +8556,8 @@ fn __action144<
     __1: (usize, IPRExpression, usize),
 ) -> alloc::vec::Vec<IPRExpression>
 {
-    let __start0 = __0.0;
-    let __end0 = __1.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action114(
         input,
         __0,
@@ -8571,7 +8572,7 @@ fn __action144<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action145<
     'input,
 >(
@@ -8581,8 +8582,8 @@ fn __action145<
     __2: (usize, IPRExpression, usize),
 ) -> alloc::vec::Vec<IPRExpression>
 {
-    let __start0 = __1.0;
-    let __end0 = __2.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action114(
         input,
         __1,
@@ -8598,7 +8599,7 @@ fn __action145<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action146<
     'input,
 >(
@@ -8606,8 +8607,8 @@ fn __action146<
     __0: (usize, IPRExpression, usize),
 ) -> Vec<IPRExpression>
 {
-    let __start0 = __0.2;
-    let __end0 = __0.2;
+    let __start0 = __0.2.clone();
+    let __end0 = __0.2.clone();
     let __temp0 = __action112(
         input,
         &__start0,
@@ -8623,7 +8624,7 @@ fn __action146<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action147<
     'input,
 >(
@@ -8632,8 +8633,8 @@ fn __action147<
     __1: (usize, alloc::vec::Vec<IPRExpression>, usize),
 ) -> Vec<IPRExpression>
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action113(
         input,
         __1,
@@ -8648,7 +8649,7 @@ fn __action147<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action148<
     'input,
 >(
@@ -8657,8 +8658,8 @@ fn __action148<
     __1: (usize, String, usize),
 ) -> alloc::vec::Vec<String>
 {
-    let __start0 = __0.0;
-    let __end0 = __1.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action108(
         input,
         __0,
@@ -8673,7 +8674,7 @@ fn __action148<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action149<
     'input,
 >(
@@ -8683,8 +8684,8 @@ fn __action149<
     __2: (usize, String, usize),
 ) -> alloc::vec::Vec<String>
 {
-    let __start0 = __1.0;
-    let __end0 = __2.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action108(
         input,
         __1,
@@ -8700,7 +8701,7 @@ fn __action149<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action150<
     'input,
 >(
@@ -8708,8 +8709,8 @@ fn __action150<
     __0: (usize, String, usize),
 ) -> Vec<String>
 {
-    let __start0 = __0.2;
-    let __end0 = __0.2;
+    let __start0 = __0.2.clone();
+    let __end0 = __0.2.clone();
     let __temp0 = __action106(
         input,
         &__start0,
@@ -8725,7 +8726,7 @@ fn __action150<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action151<
     'input,
 >(
@@ -8734,8 +8735,8 @@ fn __action151<
     __1: (usize, alloc::vec::Vec<String>, usize),
 ) -> Vec<String>
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action107(
         input,
         __1,
@@ -8750,7 +8751,7 @@ fn __action151<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action152<
     'input,
 >(
@@ -8759,8 +8760,8 @@ fn __action152<
     __1: (usize, String, usize),
 ) -> (String, Option<String>)
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action3(
         input,
         __1,
@@ -8775,7 +8776,7 @@ fn __action152<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action153<
     'input,
 >(
@@ -8786,8 +8787,8 @@ fn __action153<
     __3: (usize, String, usize),
 ) -> (String, Option<String>)
 {
-    let __start0 = __1.0;
-    let __end0 = __3.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __3.2.clone();
     let __temp0 = __action4(
         input,
         __1,
@@ -8804,7 +8805,7 @@ fn __action153<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action154<
     'input,
 >(
@@ -8813,8 +8814,8 @@ fn __action154<
     __1: (usize, alloc::vec::Vec<(String, Option<String>)>, usize),
 ) -> Vec<(String, Option<String>)>
 {
-    let __start0 = __0.0;
-    let __end0 = __0.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __0.2.clone();
     let __temp0 = __action3(
         input,
         __0,
@@ -8829,7 +8830,7 @@ fn __action154<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action155<
     'input,
 >(
@@ -8840,8 +8841,8 @@ fn __action155<
     __3: (usize, alloc::vec::Vec<(String, Option<String>)>, usize),
 ) -> Vec<(String, Option<String>)>
 {
-    let __start0 = __0.0;
-    let __end0 = __2.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action4(
         input,
         __0,
@@ -8858,7 +8859,7 @@ fn __action155<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action156<
     'input,
 >(
@@ -8867,8 +8868,8 @@ fn __action156<
     __1: (usize, String, usize),
 ) -> alloc::vec::Vec<(String, Option<String>)>
 {
-    let __start0 = __0.0;
-    let __end0 = __1.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action152(
         input,
         __0,
@@ -8883,7 +8884,7 @@ fn __action156<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action157<
     'input,
 >(
@@ -8894,8 +8895,8 @@ fn __action157<
     __3: (usize, String, usize),
 ) -> alloc::vec::Vec<(String, Option<String>)>
 {
-    let __start0 = __0.0;
-    let __end0 = __3.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __3.2.clone();
     let __temp0 = __action153(
         input,
         __0,
@@ -8912,7 +8913,7 @@ fn __action157<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action158<
     'input,
 >(
@@ -8922,8 +8923,8 @@ fn __action158<
     __2: (usize, String, usize),
 ) -> alloc::vec::Vec<(String, Option<String>)>
 {
-    let __start0 = __1.0;
-    let __end0 = __2.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action152(
         input,
         __1,
@@ -8939,7 +8940,7 @@ fn __action158<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action159<
     'input,
 >(
@@ -8951,8 +8952,8 @@ fn __action159<
     __4: (usize, String, usize),
 ) -> alloc::vec::Vec<(String, Option<String>)>
 {
-    let __start0 = __1.0;
-    let __end0 = __4.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __4.2.clone();
     let __temp0 = __action153(
         input,
         __1,
@@ -8970,7 +8971,7 @@ fn __action159<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action160<
     'input,
 >(
@@ -8978,8 +8979,8 @@ fn __action160<
     __0: (usize, String, usize),
 ) -> Vec<(String, Option<String>)>
 {
-    let __start0 = __0.2;
-    let __end0 = __0.2;
+    let __start0 = __0.2.clone();
+    let __end0 = __0.2.clone();
     let __temp0 = __action103(
         input,
         &__start0,
@@ -8995,7 +8996,7 @@ fn __action160<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action161<
     'input,
 >(
@@ -9004,8 +9005,8 @@ fn __action161<
     __1: (usize, alloc::vec::Vec<(String, Option<String>)>, usize),
 ) -> Vec<(String, Option<String>)>
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action104(
         input,
         __1,
@@ -9020,7 +9021,7 @@ fn __action161<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action162<
     'input,
 >(
@@ -9030,8 +9031,8 @@ fn __action162<
     __2: (usize, String, usize),
 ) -> Vec<(String, Option<String>)>
 {
-    let __start0 = __2.2;
-    let __end0 = __2.2;
+    let __start0 = __2.2.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action103(
         input,
         &__start0,
@@ -9049,7 +9050,7 @@ fn __action162<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action163<
     'input,
 >(
@@ -9060,8 +9061,8 @@ fn __action163<
     __3: (usize, alloc::vec::Vec<(String, Option<String>)>, usize),
 ) -> Vec<(String, Option<String>)>
 {
-    let __start0 = __3.0;
-    let __end0 = __3.2;
+    let __start0 = __3.0.clone();
+    let __end0 = __3.2.clone();
     let __temp0 = __action104(
         input,
         __3,
@@ -9078,7 +9079,7 @@ fn __action163<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action164<
     'input,
 >(
@@ -9087,8 +9088,8 @@ fn __action164<
     __1: (usize, IPRTypedIdentifier, usize),
 ) -> alloc::vec::Vec<IPRTypedIdentifier>
 {
-    let __start0 = __0.0;
-    let __end0 = __1.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action117(
         input,
         __0,
@@ -9103,7 +9104,7 @@ fn __action164<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action165<
     'input,
 >(
@@ -9113,8 +9114,8 @@ fn __action165<
     __2: (usize, IPRTypedIdentifier, usize),
 ) -> alloc::vec::Vec<IPRTypedIdentifier>
 {
-    let __start0 = __1.0;
-    let __end0 = __2.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action117(
         input,
         __1,
@@ -9130,7 +9131,7 @@ fn __action165<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action166<
     'input,
 >(
@@ -9138,8 +9139,8 @@ fn __action166<
     __0: (usize, IPRTypedIdentifier, usize),
 ) -> Vec<IPRTypedIdentifier>
 {
-    let __start0 = __0.2;
-    let __end0 = __0.2;
+    let __start0 = __0.2.clone();
+    let __end0 = __0.2.clone();
     let __temp0 = __action115(
         input,
         &__start0,
@@ -9155,7 +9156,7 @@ fn __action166<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action167<
     'input,
 >(
@@ -9164,8 +9165,8 @@ fn __action167<
     __1: (usize, alloc::vec::Vec<IPRTypedIdentifier>, usize),
 ) -> Vec<IPRTypedIdentifier>
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action116(
         input,
         __1,
@@ -9180,7 +9181,7 @@ fn __action167<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action168<
     'input,
 >(
@@ -9188,8 +9189,8 @@ fn __action168<
     __0: (usize, IPRStatement, usize),
 ) -> alloc::vec::Vec<IPRStatement>
 {
-    let __start0 = __0.0;
-    let __end0 = __0.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __0.2.clone();
     let __temp0 = __action90(
         input,
         __0,
@@ -9203,7 +9204,7 @@ fn __action168<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action169<
     'input,
 >(
@@ -9212,8 +9213,8 @@ fn __action169<
     __1: (usize, IPRStatement, usize),
 ) -> alloc::vec::Vec<IPRStatement>
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action90(
         input,
         __1,
@@ -9228,7 +9229,7 @@ fn __action169<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action170<
     'input,
 >(
@@ -9238,8 +9239,8 @@ fn __action170<
     __2: (usize, &'input str, usize),
 ) -> IPRBlockExpression
 {
-    let __start0 = __0.2;
-    let __end0 = __1.0;
+    let __start0 = __0.2.clone();
+    let __end0 = __1.0.clone();
     let __temp0 = __action88(
         input,
         &__start0,
@@ -9257,7 +9258,7 @@ fn __action170<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action171<
     'input,
 >(
@@ -9268,8 +9269,8 @@ fn __action171<
     __3: (usize, &'input str, usize),
 ) -> IPRBlockExpression
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action89(
         input,
         __1,
@@ -9286,7 +9287,7 @@ fn __action171<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action172<
     'input,
 >(
@@ -9298,8 +9299,8 @@ fn __action172<
     __4: (usize, &'input str, usize),
 ) -> IPRInitializationBlock
 {
-    let __start0 = __0.0;
-    let __end0 = __0.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __0.2.clone();
     let __temp0 = __action19(
         input,
         __0,
@@ -9317,7 +9318,7 @@ fn __action172<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action173<
     'input,
 >(
@@ -9330,8 +9331,8 @@ fn __action173<
     __5: (usize, &'input str, usize),
 ) -> IPRInitializationBlock
 {
-    let __start0 = __0.0;
-    let __end0 = __1.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action132(
         input,
         __0,
@@ -9350,7 +9351,7 @@ fn __action173<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action174<
     'input,
 >(
@@ -9365,8 +9366,8 @@ fn __action174<
     __7: (usize, &'input str, usize),
 ) -> IPRInitializationBlock
 {
-    let __start0 = __0.0;
-    let __end0 = __3.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __3.2.clone();
     let __temp0 = __action133(
         input,
         __0,
@@ -9387,7 +9388,7 @@ fn __action174<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action175<
     'input,
 >(
@@ -9400,8 +9401,8 @@ fn __action175<
     __5: (usize, &'input str, usize),
 ) -> IPRInitializationBlock
 {
-    let __start0 = __0.0;
-    let __end0 = __0.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __0.2.clone();
     let __temp0 = __action19(
         input,
         __0,
@@ -9420,7 +9421,7 @@ fn __action175<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action176<
     'input,
 >(
@@ -9434,8 +9435,8 @@ fn __action176<
     __6: (usize, &'input str, usize),
 ) -> IPRInitializationBlock
 {
-    let __start0 = __0.0;
-    let __end0 = __1.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action132(
         input,
         __0,
@@ -9455,7 +9456,7 @@ fn __action176<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action177<
     'input,
 >(
@@ -9471,8 +9472,8 @@ fn __action177<
     __8: (usize, &'input str, usize),
 ) -> IPRInitializationBlock
 {
-    let __start0 = __0.0;
-    let __end0 = __3.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __3.2.clone();
     let __temp0 = __action133(
         input,
         __0,
@@ -9494,7 +9495,7 @@ fn __action177<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action178<
     'input,
 >(
@@ -9504,8 +9505,8 @@ fn __action178<
     __2: (usize, &'input str, usize),
 ) -> IPRBlockExpression
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action86(
         input,
         __1,
@@ -9521,7 +9522,7 @@ fn __action178<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action179<
     'input,
 >(
@@ -9530,8 +9531,8 @@ fn __action179<
     __1: (usize, &'input str, usize),
 ) -> IPRBlockExpression
 {
-    let __start0 = __0.2;
-    let __end0 = __1.0;
+    let __start0 = __0.2.clone();
+    let __end0 = __1.0.clone();
     let __temp0 = __action87(
         input,
         &__start0,
@@ -9548,7 +9549,7 @@ fn __action179<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action180<
     'input,
 >(
@@ -9559,8 +9560,8 @@ fn __action180<
     __3: (usize, &'input str, usize),
 ) -> IPRBlockExpression
 {
-    let __start0 = __2.0;
-    let __end0 = __2.2;
+    let __start0 = __2.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action86(
         input,
         __2,
@@ -9577,7 +9578,7 @@ fn __action180<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action181<
     'input,
 >(
@@ -9587,8 +9588,8 @@ fn __action181<
     __2: (usize, &'input str, usize),
 ) -> IPRBlockExpression
 {
-    let __start0 = __1.2;
-    let __end0 = __2.0;
+    let __start0 = __1.2.clone();
+    let __end0 = __2.0.clone();
     let __temp0 = __action87(
         input,
         &__start0,
@@ -9606,12 +9607,12 @@ fn __action181<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action182<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, String, usize),
     __3: (usize, &'input str, usize),
@@ -9621,8 +9622,8 @@ fn __action182<
     __7: (usize, Vec<IPRModuleItem>, usize),
 ) -> Vec<IPRModuleItem>
 {
-    let __start0 = __0.0;
-    let __end0 = __6.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __6.2.clone();
     let __temp0 = __action25(
         input,
         __0,
@@ -9643,12 +9644,12 @@ fn __action182<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action183<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, String, usize),
     __3: (usize, &'input str, usize),
@@ -9660,8 +9661,8 @@ fn __action183<
     __9: (usize, Vec<IPRModuleItem>, usize),
 ) -> Vec<IPRModuleItem>
 {
-    let __start0 = __0.0;
-    let __end0 = __8.2;
+    let __start0 = __0.0.clone();
+    let __end0 = __8.2.clone();
     let __temp0 = __action26(
         input,
         __0,
@@ -9684,20 +9685,20 @@ fn __action183<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action184<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, String, usize),
     __2: (usize, Option<Vec<String>>, usize),
     __3: (usize, Vec<String>, usize),
     __4: (usize, (Vec<IPRInitializationBlock>, Vec<IPRFunction>, Vec<IPRStructDataTypeDefinition>, Vec<IPRTaggedUnionDataTypeDefinition>), usize),
 ) -> IPRModule
 {
-    let __start0 = __3.0;
-    let __end0 = __3.2;
+    let __start0 = __3.0.clone();
+    let __end0 = __3.2.clone();
     let __temp0 = __action99(
         input,
         __3,
@@ -9715,19 +9716,19 @@ fn __action184<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action185<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, String, usize),
     __2: (usize, Option<Vec<String>>, usize),
     __3: (usize, (Vec<IPRInitializationBlock>, Vec<IPRFunction>, Vec<IPRStructDataTypeDefinition>, Vec<IPRTaggedUnionDataTypeDefinition>), usize),
 ) -> IPRModule
 {
-    let __start0 = __2.2;
-    let __end0 = __3.0;
+    let __start0 = __2.2.clone();
+    let __end0 = __3.0.clone();
     let __temp0 = __action100(
         input,
         &__start0,
@@ -9746,20 +9747,20 @@ fn __action185<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action186<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, String, usize),
     __2: (usize, Vec<String>, usize),
     __3: (usize, Vec<String>, usize),
     __4: (usize, (Vec<IPRInitializationBlock>, Vec<IPRFunction>, Vec<IPRStructDataTypeDefinition>, Vec<IPRTaggedUnionDataTypeDefinition>), usize),
 ) -> IPRModule
 {
-    let __start0 = __2.0;
-    let __end0 = __2.2;
+    let __start0 = __2.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action101(
         input,
         __2,
@@ -9777,19 +9778,19 @@ fn __action186<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action187<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, String, usize),
     __2: (usize, Vec<String>, usize),
     __3: (usize, (Vec<IPRInitializationBlock>, Vec<IPRFunction>, Vec<IPRStructDataTypeDefinition>, Vec<IPRTaggedUnionDataTypeDefinition>), usize),
 ) -> IPRModule
 {
-    let __start0 = __1.2;
-    let __end0 = __2.0;
+    let __start0 = __1.2.clone();
+    let __end0 = __2.0.clone();
     let __temp0 = __action102(
         input,
         &__start0,
@@ -9808,19 +9809,19 @@ fn __action187<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action188<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, String, usize),
     __2: (usize, Vec<String>, usize),
     __3: (usize, (Vec<IPRInitializationBlock>, Vec<IPRFunction>, Vec<IPRStructDataTypeDefinition>, Vec<IPRTaggedUnionDataTypeDefinition>), usize),
 ) -> IPRModule
 {
-    let __start0 = __2.0;
-    let __end0 = __2.2;
+    let __start0 = __2.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action101(
         input,
         __2,
@@ -9837,18 +9838,18 @@ fn __action188<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action189<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, String, usize),
     __2: (usize, (Vec<IPRInitializationBlock>, Vec<IPRFunction>, Vec<IPRStructDataTypeDefinition>, Vec<IPRTaggedUnionDataTypeDefinition>), usize),
 ) -> IPRModule
 {
-    let __start0 = __1.2;
-    let __end0 = __2.0;
+    let __start0 = __1.2.clone();
+    let __end0 = __2.0.clone();
     let __temp0 = __action102(
         input,
         &__start0,
@@ -9866,12 +9867,12 @@ fn __action189<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action190<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, String, usize),
     __3: (usize, Vec<String>, usize),
@@ -9879,8 +9880,8 @@ fn __action190<
     __5: (usize, (Vec<IPRInitializationBlock>, Vec<IPRFunction>, Vec<IPRStructDataTypeDefinition>, Vec<IPRTaggedUnionDataTypeDefinition>), usize),
 ) -> IPRModule
 {
-    let __start0 = __1.0;
-    let __end0 = __2.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action10(
         input,
         __1,
@@ -9899,20 +9900,20 @@ fn __action190<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action191<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, String, usize),
     __3: (usize, Vec<String>, usize),
     __4: (usize, (Vec<IPRInitializationBlock>, Vec<IPRFunction>, Vec<IPRStructDataTypeDefinition>, Vec<IPRTaggedUnionDataTypeDefinition>), usize),
 ) -> IPRModule
 {
-    let __start0 = __1.0;
-    let __end0 = __2.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action10(
         input,
         __1,
@@ -9930,20 +9931,20 @@ fn __action191<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action192<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, String, usize),
     __3: (usize, Vec<String>, usize),
     __4: (usize, (Vec<IPRInitializationBlock>, Vec<IPRFunction>, Vec<IPRStructDataTypeDefinition>, Vec<IPRTaggedUnionDataTypeDefinition>), usize),
 ) -> IPRModule
 {
-    let __start0 = __1.0;
-    let __end0 = __2.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action10(
         input,
         __1,
@@ -9961,19 +9962,19 @@ fn __action192<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action193<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, String, usize),
     __3: (usize, (Vec<IPRInitializationBlock>, Vec<IPRFunction>, Vec<IPRStructDataTypeDefinition>, Vec<IPRTaggedUnionDataTypeDefinition>), usize),
 ) -> IPRModule
 {
-    let __start0 = __1.0;
-    let __end0 = __2.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __2.2.clone();
     let __temp0 = __action10(
         input,
         __1,
@@ -9990,12 +9991,12 @@ fn __action193<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action194<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, String, usize),
     __3: (usize, Vec<String>, usize),
@@ -10003,8 +10004,8 @@ fn __action194<
     __5: (usize, Vec<IPRModuleItem>, usize),
 ) -> IPRModule
 {
-    let __start0 = __5.0;
-    let __end0 = __5.2;
+    let __start0 = __5.0.clone();
+    let __end0 = __5.2.clone();
     let __temp0 = __action13(
         input,
         __5,
@@ -10023,20 +10024,20 @@ fn __action194<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action195<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, String, usize),
     __3: (usize, Vec<String>, usize),
     __4: (usize, Vec<IPRModuleItem>, usize),
 ) -> IPRModule
 {
-    let __start0 = __4.0;
-    let __end0 = __4.2;
+    let __start0 = __4.0.clone();
+    let __end0 = __4.2.clone();
     let __temp0 = __action13(
         input,
         __4,
@@ -10054,20 +10055,20 @@ fn __action195<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action196<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, String, usize),
     __3: (usize, Vec<String>, usize),
     __4: (usize, Vec<IPRModuleItem>, usize),
 ) -> IPRModule
 {
-    let __start0 = __4.0;
-    let __end0 = __4.2;
+    let __start0 = __4.0.clone();
+    let __end0 = __4.2.clone();
     let __temp0 = __action13(
         input,
         __4,
@@ -10085,19 +10086,19 @@ fn __action196<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action197<
     'input,
 >(
     input: &'input str,
-    __0: (usize, Vec<ZeaAttribute>, usize),
+    __0: (usize, Vec<Attribute>, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, String, usize),
     __3: (usize, Vec<IPRModuleItem>, usize),
 ) -> IPRModule
 {
-    let __start0 = __3.0;
-    let __end0 = __3.2;
+    let __start0 = __3.0.clone();
+    let __end0 = __3.2.clone();
     let __temp0 = __action13(
         input,
         __3,
@@ -10114,7 +10115,7 @@ fn __action197<
 
 #[allow(unused_variables)]
 #[allow(clippy::too_many_arguments, clippy::needless_lifetimes,
-    clippy::just_underscores_and_digits)]
+    clippy::just_underscores_and_digits, clippy::clone_on_copy, clippy::unit_arg)]
 fn __action198<
     'input,
 >(
@@ -10122,10 +10123,10 @@ fn __action198<
     __0: (usize, &'input str, usize),
     __1: (usize, Vec<(String, Option<String>)>, usize),
     __2: (usize, &'input str, usize),
-) -> Vec<ZeaAttribute>
+) -> Vec<Attribute>
 {
-    let __start0 = __1.0;
-    let __end0 = __1.2;
+    let __start0 = __1.0.clone();
+    let __end0 = __1.2.clone();
     let __temp0 = __action5(
         input,
         __1,
