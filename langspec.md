@@ -1,13 +1,15 @@
-# The Zea language specification
+# The Fudge language specification
 
-Version 0.1
-(28 Feb 2026)
+Version 0.2.1
+(19 Nov 2026)
 
 # Philosophy
 
 # Program Structure
 
 ## Program Entry Point
+
+The program entry point for a binary executable is the function with the signature `main() -> U8` or `main(argv: [Str]) -> U8`.
 
 # Variables and Expressions
 
@@ -17,11 +19,23 @@ Version 0.1
 
 ### Integers
 
+
 ### Floating-point
 
-### Boolean
+Floating point types include F64 and F32, these are represented as IEEE754 floats as you would expect from most modern languages.
 
-## Compound types
+Floats provide a `:canonicalize_NaN()` method, which converts any valid representation of `NaN` into the same constant value of [still gotta figure that one out]
+
+
+### Boolean
+The boolean type is really just a U8 with only two possible values: `0` and `1`, you can convert from any integer `n` to a boolean
+using `n != 0`.
+
+`F32` and `F64` provide a `:is_nonzero()` method, which will compare the float to the float-constants `0.0` or `-0.0`.
+
+## Derived Types
+Deried types are any of the types that are not built into the language, like the integer- boolean- and floating point types.
+These include all structs, enums and unions.
 
 # Compiler options
 
@@ -30,7 +44,7 @@ Version 0.1
 - `--loglevel=LEVEL`: specify the logging level, where `LEVEL` is one of `[ERROR, WARN, INFO, DEBUG, TRACE]` (from least- to most-verbose)
 
 ## EXTENSION: Compiler subcommands
-The compiler can also setup a project skeleton for you 
+The compiler can also setup a project skeleton for you, 
 
 ## EXTENSION: Compiler directives
 A compiler directive is an annotation above some piece of code that has the form `@ [directive-name] [directive option]`
@@ -51,32 +65,32 @@ This will apply the directive to all applicable items within that module.
 
 To change the defaults or directives when compiling multiple modules, directives can be supplied after the `--@` subcommand.
 ```
-zea compile a.zea b.zea --@ layout-reorder=false target-arch=x86_64
+fudge compile a.fud b.fud --@ layout-reorder=false target-arch=x86_64-unknown-linux-gnu
 ```
-This will compile both `a.zea` and `b.zea` as if their declaration had `@ layout-reordering = false` above them.
+This will compile both `a.fud` and `b.fud` as if their declaration had `@ layout-reordering = false` above them.
 
 alternatively, a path to a `.toml` file containing directives can be supplied instead:
 ```
 // flags.toml
 layout-reordering = false
-target-arch = "x86_64"
+target-arch = "x86_64-unknown-linux-gnu"
 ...
 // flags.toml
 
-> zea compile a.zea b.zea --@ file=flags.toml
+> fudge compile a.zea b.zea --@ file=flags.toml
 ```
+
 
 The compiler will search for a `flags.toml` file within the same directory that the compiler is called from,
 if it finds such a file, it will apply those flags to the compilation.
 
 These directives instruct the compiler to do something at compile-time, such as:
-- `@ layout-reorder = true|false` for specifying struct layout ordering
-- `@ target-arch = [architecture]` for specifying the target architecture
-- `@ alignment = N` for specifying the alignment of a struct in bytes
+- `@ struct-reorder = true|false` for specifying struct layout ordering
+- `@ target-triple = [target triple]` for specifying the target architecture
+- `@ alignment = N` for specifying the alignment of a datatype in bytes
 - `@ inline` for inlining
 - `@ hot` and/or `@ cold` for hinting hot- or cold branches
-- `@ unreachable` for specifying unreachable code branching code that must otherwise be exhaustive
-- `@ eliminate-dead-code = false` for specifying if code may or may not be optimized out, even if it never called (default = true)
+- `@ unreachable` for specifying unreachable code branches code that must otherwise be exhaustive
 
 Supplying an non-existent directive, or supplying a directives with an invalid value such as `@ alignment = shimmadingle` will result in a compilation failure.
 
@@ -91,13 +105,12 @@ default-profile = debug
 Olevel = 3
 strip-debug = true
 debug-assert = "ignore"
-crash-unreachable = false
-zero-initialize = false
+abort-unreachable = false
 
 [debug]
 Olevel = 0
 strip-debug = false
-debug-assert = "keep"
+debug-assert = true
 ```
 
 a profile can be chosen at compile-time using the `--profile=[profile]` flag, if it is omitted, the `default-profile` form the profiles is used.
@@ -137,29 +150,20 @@ The standard library provides a module called bit-reinterpret,
 which will be populated at compile-time with function that bit-cast between types. Cast functions will only be synthesized for types of equal width.
 
 ## Struct size and field ordering
-Struct will have an alighment equal to their widest field.
+Struct will have an alighment equal to that of its field with the highest alignment.
 The size `S` of a struct is calculated as follows:
-- call the alignment of the Struct `A`
-- call the sum of the size of the fields `Sumf`
-- find the smallest `n`in `n * A` such that `S >= Sumf`
-- the size `S` is then `n * A`
-i.e. the smallest multiple `n` such that `n * A >= Sumf`
-Struct fields are ordered largest to smallest by default, as to minimize the padding required.
+- iterate over each field `f` with alignment `a`
+- align the current size to a multiple of `a`, then add the size of `f`
+When `@ struct-reorder = true`, the fields of a struct are placed in descending order of size.
 
-#### EXTENSION: opt-out of field-reordering
-The developer may specify if layout-reordering should be applied by directing the compiler using `@ layout-reorder = [boolean]`,
-whereas the default is `@ layout-reorder = true`. The directive subcommand option `layout-reorder=(true|false)` may be set to change the default. 
-
-
-## stupid C shit you could do
-What happens if you where to do the stupid shit you could do in C?
+## C's undefined behaviour compared to Fudge
 - unreachable code
-    - reaching code marked `@ unreachable` when `@ crash-unreachable = true` (the default) will immediatly crash the program with an error,
-    - reaching code marked `@ unreachable` when `@ crash-unreachable = false` will depend entirely on the generated binary and is considered undefined,
-      it may lead to memory corruptions or explosions or something idk, be careful.
+    - reaching code marked `@ unreachable` when `@ abort-unreachable = true` (the default) will immediatly crash the program with an error,
+    - reaching code marked `@ unreachable` when `@ abort-unreachable = false` will depend entirely on the generated machine code and is considered undefined,
+      it may lead to memory corruptions or explosions or something, be careful.
 - bit-casting between types of different sizes using `bit-reinterpret<val, Type>` depends:
     - casting to a wider type will zero-extend the value with most-significant bytes
-    - cating to a narrower type will truncate the excess bits
+    - casting to a narrower type will truncate the excess bits
 - dereferencing a NULL pointer will immediatly crash the program with an error
 - initialization
     - allocated memory is always initialized to 0 when the `@ zero-initialize = true` (the default) is set
