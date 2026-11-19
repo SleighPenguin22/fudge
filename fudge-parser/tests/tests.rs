@@ -1,4 +1,4 @@
-// use zea_parser::parse;
+// use fudge_parser::parse;
 // #[test]
 // fn parses_basic_main() {
 //     let src = read_to_string("tests/dummy_programs/basic_main.zea").unwrap();

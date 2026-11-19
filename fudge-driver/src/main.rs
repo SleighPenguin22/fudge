@@ -5,6 +5,10 @@
 //     pub filename: String,
 // }
 
+use fudge_clargs::CompilerConfig;
+use fudge_codegen::THRtoQBE;
+use fudge_common::{FudgeError, InternalCompilerError, UserError};
+use fudge_parser::parse_module;
 use log::{error, info, trace};
 use std::{
     error::Error,
@@ -14,9 +18,6 @@ use std::{
     process::exit as pexit,
 };
 use tempfile::NamedTempFile;
-use zea_clargs::CompilerConfig;
-use zea_codegen::THRtoQBE;
-use zea_common::{FudgeError, InternalCompilerError, UserError};
 use zea_irs::ast::{
     NodeLabeler,
     ipr_walkers::{
@@ -27,7 +28,6 @@ use zea_irs::ast::{
 };
 use zea_irs::visualisation::IndentPrint;
 use zea_irs::{FudgeTypeChecker, typecheck_module};
-use zea_parser::parse_module;
 
 /// 'unwrap' an error, providing context that the user-error needs
 /// as to supply the user with helpful info,

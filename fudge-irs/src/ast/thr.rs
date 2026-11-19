@@ -124,8 +124,8 @@
 
 use std::collections::HashMap;
 
+use fudge_clargs::{CompilerConfig, ModuleType};
 use rayon::prelude::*;
-use zea_clargs::{CompilerConfig, ModuleType};
 
 use crate::{
     ScalarTypeWidth,
@@ -138,12 +138,12 @@ use crate::{
         },
         ipr_walkers::{transformers::IdentifierScoper, visitors::SymbolKind},
     },
-    attributes::{ZeaAttribute, ZeaFunctionAttributes},
+    attributes::{Attribute, FudgeFunctionAttributes},
 };
 use crate::{ast::NodeId, typecheck::IPRModuleTypeInfo};
+use fudge_common::{CompilerErrorKind, CompilerStage, InternalCompilerError};
 use idset::{InternKey, KeySet, KeyVec, PreKeyVec, internkey};
 use log::trace;
-use zea_common::{CompilerErrorKind, CompilerStage, InternalCompilerError};
 use zea_internal_macros::InternKey;
 
 use super::ipr;
@@ -447,7 +447,7 @@ pub struct THRFunction {
     pub params: Box<[THRSymbolDecl]>,
     pub body: Box<[THRStatementID]>,
     pub returns: THRTypeID,
-    pub attributes: ZeaFunctionAttributes,
+    pub attributes: FudgeFunctionAttributes,
     pub ipr_id: NodeId,
 }
 
@@ -457,7 +457,7 @@ impl THRFunction {
         params: Vec<THRSymbolDecl>,
         body: Vec<THRStatementID>,
         returns: THRTypeID,
-        attributes: ZeaFunctionAttributes,
+        attributes: FudgeFunctionAttributes,
         ipr_id: NodeId,
     ) -> Self {
         Self {

@@ -10,7 +10,7 @@ use crate::ast::ipr_walkers::{
 use crate::ast::{NodeId, ZeaNodeQuery, ipr::*};
 use crate::impls::StructuralEq;
 use arbitrary::Arbitrary;
-use zea_common::InternalCompilerError;
+use fudge_common::InternalCompilerError;
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug, Arbitrary)]
 pub enum SymbolKind {
@@ -129,8 +129,8 @@ impl ScopeAnnotations {
     ) -> Result<(), InternalCompilerError> {
         let IPRInitializationKind::Unpacked(u) = &init.kind else {
             return Err(InternalCompilerError::new(
-                zea_common::CompilerStage::LexicalScopeAnalysis,
-                zea_common::CompilerErrorKind::StrayPackedInit,
+                fudge_common::CompilerStage::LexicalScopeAnalysis,
+                fudge_common::CompilerErrorKind::StrayPackedInit,
             ));
         };
         for init in u.iter() {
@@ -146,8 +146,8 @@ impl ScopeAnnotations {
     ) -> Result<(), InternalCompilerError> {
         let IPRInitializationKind::Unpacked(u) = &init.kind else {
             return Err(InternalCompilerError::new(
-                zea_common::CompilerStage::LexicalScopeAnalysis,
-                zea_common::CompilerErrorKind::StrayPackedInit,
+                fudge_common::CompilerStage::LexicalScopeAnalysis,
+                fudge_common::CompilerErrorKind::StrayPackedInit,
             ));
         };
         for init in u.iter() {

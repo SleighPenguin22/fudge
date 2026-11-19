@@ -1,4 +1,4 @@
-# zea-codegen
+# fudge-codegen
 
 This module contains the logic for building QBE IL out of the THR IL.
 

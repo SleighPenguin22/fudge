@@ -1,0 +1,19 @@
+[package]
+name = "zea"
+version = "0.2.0"
+edition = "2024"
+
+[dependencies]
+fudge-parser = {path = "../fudge-parser"}
+zea-irs = {path = "../fudge-irs"}
+fudge-common = {path = "../fudge-common"}
+fudge-codegen = {path="../fudge-codegen"}
+fudge-clargs = {path = "../fudge-clargs"}
+log = { version = "0.4.33", features = ["std"] }
+colog = "1.4.0"
+tempfile = "3.27.0"
+
+
+
+[lints]
+workspace = true

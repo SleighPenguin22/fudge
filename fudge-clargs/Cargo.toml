@@ -1,5 +1,5 @@
 [package]
-name = "zea-clargs"
+name = "fudge-clargs"
 version = "0.1.0"
 edition = "2024"
 

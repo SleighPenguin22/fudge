@@ -1,12 +1,12 @@
 [package]
-name = "zea-codegen"
+name = "fudge-codegen"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-zea-irs = {path = "../zea-irs"}
-zea-common = {path = "../zea-common"}
-zea-internal-macros = { path = "../zea-internal-macros" }
+zea-irs = {path = "../fudge-irs"}
+fudge-common = {path = "../fudge-common"}
+zea-internal-macros = { path = "../fudge-macros" }
 qbe = {path = "../qbe-rs"}
 log = { version = "0.4.33", features = ["std"] }
 idset = "0.5.0"

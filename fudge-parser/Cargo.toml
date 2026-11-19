@@ -1,10 +1,10 @@
 [package]
-name = "zea-parser"
+name = "fudge-parser"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-zea-irs = { path = "../zea-irs" }
+zea-irs = { path = "../fudge-irs" }
 lalrpop-util = { version = "0.23.1", features = ["lexer", "unicode"], optional = true }
 log = {version="0.4.33",features = ["std"]}
 clap = { version = "4.6.2", features = ["derive"] }

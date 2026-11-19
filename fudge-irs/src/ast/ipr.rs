@@ -1,4 +1,5 @@
 use arbitrary::{Arbitrary, Unstructured};
+use fudge_common::UserError;
 use log::error;
 use std::{
     char,
@@ -6,7 +7,6 @@ use std::{
     hash::{Hash, Hasher},
     process::exit,
 };
-use zea_common::ZeaUserError;
 
 use zea_internal_macros::ASTStructuralEq;
 
@@ -20,7 +20,7 @@ use crate::{
         },
     },
     attributes::{
-        FudgeModuleAttributes, IPRBlockAttributes, IPRBranchAttributes, ZeaFunctionAttributes,
+        FudgeFunctionAttributes, FudgeModuleAttributes, IPRBlockAttributes, IPRBranchAttributes,
     },
     impls::StructuralEq,
 };
@@ -212,7 +212,7 @@ pub struct IPRFuncParam {
 /// Functions may be imported as many times as needed.
 #[derive(Debug, Clone, Arbitrary)]
 pub struct IPRFunction {
-    pub attributes: ZeaFunctionAttributes,
+    pub attributes: FudgeFunctionAttributes,
     pub id: NodeId,
     pub name: String,
     pub params: Vec<IPRFuncParam>,

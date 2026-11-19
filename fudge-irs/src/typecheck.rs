@@ -128,9 +128,9 @@ use std::{
     time::Duration,
 };
 
+use fudge_common::{FudgeError, FudgeErrorMessage, InternalCompilerError, UserError, ice_bail};
 use idset::{KeySet, internkey};
 use log::{error, info, trace};
-use zea_common::{InternalCompilerError, ZeaError, ZeaErrorMessage, ZeaUserError, ice_bail};
 
 use crate::{
     ast::{BinOp, NodeId, ipr::*, thr::THRTypeSpecifier},
@@ -146,7 +146,7 @@ pub fn typecheck_module(
     Ok(tc.finish())
 }
 
-type TypeCheckResult<T> = Result<T, ZeaError<TypeCheckError>>;
+type TypeCheckResult<T> = Result<T, FudgeError<TypeCheckError>>;
 
 const BUILTIN_SCALAR_TYPES: [IPRTypeSpecifier; 10] = [
     IPRTypeSpecifier::t_Bool(),
@@ -422,19 +422,19 @@ impl IPRModuleTypeInfo {
     }
 }
 
-impl zea_common::ZeaUserError for TypeCheckError {
-    type ZeaUserErrorContext = FudgeTypeChecker;
-    fn zea_error_format(&self, ctx: &FudgeTypeChecker) -> ZeaErrorMessage {
+impl fudge_common::UserError for TypeCheckError {
+    type ErrorContext = FudgeTypeChecker;
+    fn zea_error_format(&self, ctx: &FudgeTypeChecker) -> FudgeErrorMessage {
         match self {
             Self::IllegalTypeCoercion(a, b, kind) => {
                 let t_a = ctx.interned_types.get_specifier_by_id(*a);
                 let t_b = ctx.interned_types.get_specifier_by_id(*b);
-                ZeaErrorMessage {
+                FudgeErrorMessage {
                     msg: format!("illegal type coercion of types {t_a:?} and {t_b:?}: {kind:?}"),
                     loc: None,
                 }
             }
-            Self::InvalidOperands(id, op) => ZeaErrorMessage {
+            Self::InvalidOperands(id, op) => FudgeErrorMessage {
                 msg: format!("illegal operands for operator {op:?} in {id:?}",),
                 loc: None,
             },
@@ -498,7 +498,7 @@ impl FudgeTypeChecker {
         &mut self,
         inf_var: TypeVariable,
         typ: &IPRTypeSpecifier,
-    ) -> Result<(), ZeaError<TypeCheckError>> {
+    ) -> TypeCheckResult<()> {
         let t_id = self.interned_types.get_or_intern(typ);
         trace!("\tsolving type variable {inf_var:?} of literal to type {typ:?}");
         self.typevar_solving.set_solved(inf_var, t_id);
@@ -643,8 +643,8 @@ impl FudgeTypeChecker {
     ) -> TypeCheckResult<()> {
         let IPRInitializationKind::Unpacked(inits) = &assigment.kind else {
             return Err(InternalCompilerError::new(
-                zea_common::CompilerStage::TypeCheck,
-                zea_common::CompilerErrorKind::StrayPackedInit,
+                fudge_common::CompilerStage::TypeCheck,
+                fudge_common::CompilerErrorKind::StrayPackedInit,
             )
             .into());
         };
@@ -692,9 +692,9 @@ impl FudgeTypeChecker {
             }
             IPRExpressionKind::StringLiteral(_) => todo!(),
             IPRExpressionKind::UnScopedIdent(_) => {
-                return Err(ZeaError::Internal(InternalCompilerError::new(
-                    zea_common::CompilerStage::TypeCheck,
-                    zea_common::CompilerErrorKind::StrayUnscopedIdent,
+                return Err(FudgeError::Internal(InternalCompilerError::new(
+                    fudge_common::CompilerStage::TypeCheck,
+                    fudge_common::CompilerErrorKind::StrayUnscopedIdent,
                 )));
             }
             IPRExpressionKind::ScopedIdent(_) => {}
@@ -828,9 +828,9 @@ impl FudgeTypeChecker {
                 todo!("member access inference")
             }
             IPRExpressionKind::UnScopedIdent(_) => {
-                return Err(ZeaError::Internal(InternalCompilerError::new(
-                    zea_common::CompilerStage::TypeCheck,
-                    zea_common::CompilerErrorKind::StrayUnscopedIdent,
+                return Err(FudgeError::Internal(InternalCompilerError::new(
+                    fudge_common::CompilerStage::TypeCheck,
+                    fudge_common::CompilerErrorKind::StrayUnscopedIdent,
                 )));
             }
             IPRExpressionKind::IfThenElse(branch) => {
@@ -884,7 +884,7 @@ impl FudgeTypeChecker {
                         self.hindley_milner_unify(var, u64_tvar)?;
                         Ok(u64_tvar)
                     }
-                    _ => Err(ZeaError::User(TypeCheckError::InvalidOperands(id, op))),
+                    _ => Err(FudgeError::User(TypeCheckError::InvalidOperands(id, op))),
                 }
             }
             BinOp::Subscript => todo!(),
@@ -902,9 +902,9 @@ impl FudgeTypeChecker {
         }?;
         let interned: InternedType =
             self.get_solved_interned_type(res_tvar)
-                .ok_or(ZeaError::User(TypeCheckError::ExpectedSolvedTypeVariable(
-                    res_tvar,
-                )))?;
+                .ok_or(FudgeError::User(
+                    TypeCheckError::ExpectedSolvedTypeVariable(res_tvar),
+                ))?;
         self.node_types.insert(id, interned);
         Ok(res_tvar)
     }
@@ -967,7 +967,7 @@ impl FudgeTypeChecker {
         for glob in module.global_vars.iter_mut() {
             match self.check_assignment(glob) {
                 Ok(_) => {}
-                Err(ZeaError::User(TypeCheckError::ExpectedSolvedTypeVariable(t))) => {
+                Err(FudgeError::User(TypeCheckError::ExpectedSolvedTypeVariable(t))) => {
                     self.trace_insufficient_info_for_solving(t);
                 }
                 Err(other) => {
@@ -979,7 +979,7 @@ impl FudgeTypeChecker {
         for f in module.functions.iter_mut() {
             match self.check_function(f) {
                 Ok(_) => {}
-                Err(ZeaError::User(TypeCheckError::ExpectedSolvedTypeVariable(t))) => {
+                Err(FudgeError::User(TypeCheckError::ExpectedSolvedTypeVariable(t))) => {
                     self.trace_insufficient_info_for_solving(t);
                 }
                 Err(other) => {
@@ -1037,8 +1037,8 @@ impl FudgeTypeChecker {
     fn check_assignment(&mut self, assign: &mut IPRInitializationBlock) -> TypeCheckResult<()> {
         let IPRInitializationKind::Unpacked(inits) = &mut assign.kind else {
             return Err(InternalCompilerError::new(
-                zea_common::CompilerStage::TypeCheck,
-                zea_common::CompilerErrorKind::StrayPackedInit,
+                fudge_common::CompilerStage::TypeCheck,
+                fudge_common::CompilerErrorKind::StrayPackedInit,
             )
             .into());
         };
@@ -1077,9 +1077,9 @@ impl FudgeTypeChecker {
             let t_conc_id = self
                 .typevar_solving
                 .get_solved(t_inferred)
-                .ok_or(ZeaError::User(TypeCheckError::ExpectedSolvedTypeVariable(
-                    t_inferred,
-                )))?;
+                .ok_or(FudgeError::User(
+                    TypeCheckError::ExpectedSolvedTypeVariable(t_inferred),
+                ))?;
             let t_conc = self.interned_types.get_specifier_by_id(t_conc_id).clone();
             trace!(
                 "\tannotating symbol `{}` with type {:?}",

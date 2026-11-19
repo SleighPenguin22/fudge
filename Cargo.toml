@@ -1,7 +1,7 @@
 [workspace]
 resolver = "3"
 edition = 2024
-members = ["zea-irs", "zea-driver", "zea-parser", "zea-codegen", "zea-internal-macros", "zea-common", "qbe-rs", "zea-clargs"]
+members = ["fudge-irs", "fudge-driver", "fudge-parser", "fudge-codegen", "fudge-macros", "fudge-common", "qbe-rs", "fudge-clargs"]
 exclude = ["fuzz"]
 
 [workspace.lints.rust]

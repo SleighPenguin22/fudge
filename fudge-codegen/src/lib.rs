@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use idset::{KeySet, internkey};
 use log::{error, trace};
 use qbe::{self as Q};
-use zea_common::InternalCompilerError;
+use fudge_common::InternalCompilerError;
 use zea_irs::{
     ScalarTypeWidth,
     ast::{
@@ -67,8 +67,8 @@ impl<'m> THRtoQBE<'m> {
             let stmt = self.thr_module.get_statement(stmt);
             let THRStatement::Init { decl, val, .. } = *stmt else {
                 return Err(InternalCompilerError::new(
-                    zea_common::CompilerStage::CodeGen,
-                    zea_common::CompilerErrorKind::GlobalNonInitStmt,
+                    fudge_common::CompilerStage::CodeGen,
+                    fudge_common::CompilerErrorKind::GlobalNonInitStmt,
                 ));
             };
             let d = self.prepare_datadef(module, decl, val)?;
@@ -434,8 +434,8 @@ impl<'m> THRtoQBE<'m> {
             SymbolKind::FunctionName => self.mangle_func_name(&ident.name),
             _ => {
                 return Err(InternalCompilerError::new(
-                    zea_common::CompilerStage::CodeGen,
-                    zea_common::CompilerErrorKind::InvalidNonGlobalSymbolUsage,
+                    fudge_common::CompilerStage::CodeGen,
+                    fudge_common::CompilerErrorKind::InvalidNonGlobalSymbolUsage,
                 ));
             }
         };

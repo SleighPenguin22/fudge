@@ -14,16 +14,16 @@ use crate::ast::{NodeId, ipr::*};
 use crate::impl_nodelabeler;
 use crate::visualisation::IndentPrint;
 use arbitrary::{Arbitrary, Unstructured};
+use fudge_clargs::CompilerConfig;
+use fudge_common::{
+    CompilerStage, FudgeError, FudgeErrorMessage, InternalCompilerError, UserError,
+};
 use idset::{InternKey, KeySet, UsizeLike, internkey};
 use log::trace;
 use std::collections::{HashMap, HashSet};
 use std::env::Args;
 use std::ops::IndexMut;
 use std::process::exit;
-use zea_clargs::CompilerConfig;
-use zea_common::{
-    CompilerStage, InternalCompilerError, ZeaError, ZeaErrorMessage, ZeaUserError, ice_bail,
-};
 use zea_internal_macros::{InternKey, VariantToStr};
 
 pub trait NodeLabeler: Sized {
@@ -345,9 +345,9 @@ pub enum ScopeResolutionError {
     },
 }
 
-impl ZeaUserError for ScopeResolutionError {
-    type ZeaUserErrorContext = IdentifierScoper;
-    fn zea_error_format(&self, ctx: &IdentifierScoper) -> ZeaErrorMessage {
+impl fudge_common::UserError for ScopeResolutionError {
+    type ErrorContext = IdentifierScoper;
+    fn zea_error_format(&self, ctx: &IdentifierScoper) -> FudgeErrorMessage {
         let buffer = match self {
             ScopeResolutionError::NotInScopeError {
                 ident,
@@ -382,7 +382,7 @@ impl ZeaUserError for ScopeResolutionError {
                 )
             }
         };
-        ZeaErrorMessage {
+        FudgeErrorMessage {
             msg: buffer,
             loc: None,
         }
@@ -402,7 +402,7 @@ pub fn scope_module(
     mut module: IPRModule,
 ) -> (
     IdentifierScoper,
-    Result<IPRModule, ZeaError<ScopeResolutionError>>,
+    Result<IPRModule, FudgeError<ScopeResolutionError>>,
 ) {
     let mut scoper = IdentifierScoper::new(&module);
     if let Err(e) = scoper.visit_module(&mut module) {
@@ -412,7 +412,7 @@ pub fn scope_module(
 }
 
 impl IPRTransfomer<'_> for IdentifierScoper {
-    type TransformerError = ZeaError<ScopeResolutionError>;
+    type TransformerError = FudgeError<ScopeResolutionError>;
     type TransformerOk = ();
     fn visit_expr(
         &mut self,
@@ -462,8 +462,8 @@ impl IPRTransfomer<'_> for IdentifierScoper {
         for glob in module.global_vars.iter_mut() {
             let IPRInitializationKind::Unpacked(u) = &mut glob.kind else {
                 return Err(InternalCompilerError::new(
-                    zea_common::CompilerStage::LexicalScopeAnalysis,
-                    zea_common::CompilerErrorKind::StrayPackedInit,
+                    fudge_common::CompilerStage::LexicalScopeAnalysis,
+                    fudge_common::CompilerErrorKind::StrayPackedInit,
                 )
                 .into());
             };
@@ -498,7 +498,7 @@ impl IPRTransfomer<'_> for IdentifierScoper {
             if let Some(p) = scope.introduces(&param.name)
                 && p.kind == SymbolKind::FunctionParam
             {
-                return Err(ZeaError::User(ScopeResolutionError::DuplicateBinding {
+                return Err(FudgeError::User(ScopeResolutionError::DuplicateBinding {
                     ident: param.name.clone(),
                     first_binding: p.clone(),
                     scope_stack_top: self.current_scope_idx(),
@@ -548,7 +548,7 @@ impl IdentifierScoper {
     pub fn scope_module(
         &mut self,
         mut module: IPRModule,
-    ) -> Result<IPRModule, ZeaError<ScopeResolutionError>> {
+    ) -> Result<IPRModule, FudgeError<ScopeResolutionError>> {
         self.visit_module(&mut module).map(|_| module)
     }
 
@@ -639,7 +639,7 @@ impl IdentifierScoper {
     fn visit_branch_twig(
         &mut self,
         twig: &mut IPRExpression,
-    ) -> Result<(), ZeaError<ScopeResolutionError>> {
+    ) -> Result<(), FudgeError<ScopeResolutionError>> {
         if let Some(twig) = branch_twig_as_block(twig) {
             self.enter_scope(twig.id, ScopeKind::BranchTwig);
             walk_mut_block(self, twig)?;
