@@ -32,6 +32,7 @@ perf.data.old
 bob*
 .cargo/
 
+*.zea
 *.o
 *.s
 *.S
