@@ -1,9 +1,7 @@
-# zealang
+# Fudge
 
-once you Zea it, you won't want to C it.
-
-Zea is a C-like language whose main goal is to reduce the boilerplate required to simulate
-features of more modern languages
+Fudge is a systems language that aims to provide developer ergonomics, while keeping close to the performance
+of established languages like C or Rust.
 
 The syntax looks quite similar to Rust, mostly because I like Rust's syntax :D
 
@@ -13,14 +11,14 @@ The syntax looks quite similar to Rust, mostly because I like Rust's syntax :D
 - returning integer -literals, -locals and -globals from `main()`
 - thats about it right now
 
-# how to use
+# how to build/use
 - clone the project
 - run `cargo build --release`
-- run `./target/release/zea-driver --help` to show CLI usage
+- run `./target/release/fudge-driver --help` to show CLI usage
 
+## Features borrowed from modern languages
 Some features include:
-## tuple-types and first-class syntax for them
-### tuple-types
+### tuples and destructuring
 `fn make-coord(x: F32, y: F32) -> (F32,F32) { (x,y) }`
 
 ### tuple-destructuring:
@@ -28,15 +26,9 @@ to destructure a tuple, a tuple-pattern is used:
 `@(x,y) : (F32,F32) = coord;`
 `@(a,b,(c,d)) := some-tuple;`
 
-The pattern has the following grammar rule:
-```ebnf
-tuple-pattern ::= '@' tuple-pattern-inner
-tuple-pattern-inner ::= '(' pattern (',' pattern)* ')'
-pattern ::= tuple-pattern-inner | identifier
-```
+currently the `@` before a destructuring pattern is requires due to a limitation
+in the implementation of the parser. When hand-writing the parser, I hope to resolve this.
 
-
-## Some ergonomics borrowed from modern languages
 
 ### order of declaration is not significant
 no more forward declarations!
@@ -48,13 +40,13 @@ no more forward declarations!
 // this is allowed just fine!
 ```
 
-### blocks-as-expressions and tail-returns
+### expression-oriented language
 ```Rust
 fn square(x: U32) -> U32 {
     x * x // tailing expression in a block is treated as return
 }
 
-fn read-to-string(path: String) -> *String {
+fn read-to-string(path: String) -> String* {
     // option type and early return
     f : File = fs:open(path) else return nil; 
     buffer := String:new();
@@ -72,14 +64,14 @@ fn foo() -> U32 {
 ```
 
 ## defining datatypes
-Zea allows three kinds of datatypes: structs, tags and unions,
-with plans to add ergonomics for tagged-unions (i.e. Rust enums) later.
+Fudge allows three kinds of datatypes: structs, tags and unions,
+with plans to add syntax-level support for tagged-unions (i.e. Rust enums) later.
 
-structs are compound-datatypes which can contains any amount of field of mixed types.
+structs are a heterogenously-typed collection of named fields.
 
 tags are like C-enums, literally just integers with a name, except that they are in a namespace now!
 
-Unions allow developers to read and write to a single variable as different types.
+Unions allow you to read and write to a single variable as if it were many different types.
 They are identical to C-unions, except that type-punning (explained later) is well-defined now.
 
 #### Structs
@@ -88,7 +80,7 @@ to define a struct, use the `struct` keyword, define fields by declaring variabl
 struct Foo {
     field1: U32,
     field2: Bool,
-    field3: String*
+    field3: String*, // trailing comma's are allowed of course
 }
 ```
 
@@ -96,38 +88,46 @@ Instantiating a struct looks similar to defining one, except that you *do* inclu
 it is not necessary to specify the type.
 
 ```
-string := "meow";
+s := "meow";
 
 foo := Foo {
     field1 := 3,
     field2 := true,
-    field3 := string&
+    field3 := s&
 };
 ```
 
 #### Tags
-To define a tag, use the `tag` keyword, by default, the tags are assigned integers in increasing order, starting from 0.
-You may assign unique values to tag variants. To determine  what the integer value of a tag variant is, you can follow the simple rule:
-the value of a tag variant is the one it is explicitly given. If it is not explicitly given one, it is one more than the one above it:
+To define a tag, use the `tag` keyword, by default, the tags are assigned integer values in increasing order, starting from 0.
+You may assign unique values to a tag variant.
 
 ```
 tag HTTPCode {
     Ok: 202, // 202, duhh
-    Okp1, // 203, because it has no assigned value
-    Forbidden: 403 // 403, duhh
-    Error, // 404
+    Okp1, // = 203 
+    Forbidden: 403
+    Error, // = 404
 } 
 ```
 
 to get the value of a tag as an integer, you can use the `discriminant()` method that each tag datatype gets automatically:
-```
+
+```Rust
 code := HTTPCode:Ok;
 code_as_int := code:discriminant();
 if code_as_int == 202 {
-    stdout:print-line("its okay bro");
+    stdout:print-line("all fine!");
 }
 else {
-    stdout:print-line("wtf");
+    stdout:print-line("oopsie...");
+}
+
+// or:
+if code == HTTPCode:Ok {
+    stdout:print-line("all fine!");
+}
+else {
+    stdout:print-line("oopsie...");
 }
 ```
 
@@ -169,16 +169,16 @@ fn Q-rsqrt(f: F64) -> F64 {
     i.u = (0x5f3759df - (i.u >> 1));
 
     // then read and copy the value of the F64 variant, which is now modified 
-    y := i.fptr; 
+    y := i.f; 
 
-    y = y * (3.5 - (x2 * y * y)); // euler shit
-    y // tadaaaaaaa we have (1 / sqrt(f))
+    y = y * (3.5 - (x2 * y * y)); // euler
+    y // = (1 / sqrt(f))
 }
 ```
 
 #### Tagged unions
 As of right now, tagged unions are a construct developers must build themselves, leading to lots of boilerplate.
-We plan to implement tagged unions in a fashion similar to Rust somewhere in the future. Probably using some sort of syntax sugar.
+I plan to implement tagged unions in a fashion similar to Rust somewhere in the future. Probably using some sort of syntax sugar.
 
 ### Namespaces
 A file may declare a module, which contains imports, exports, datatypes, functions and globally-scoped identifiers.
@@ -217,7 +217,7 @@ struct Chicken {
 
 fn Chicken:new() -> Chicken {
     Chicken {
-        .eggs_laid: 0
+        eggs-laid := 0
     }
 }
 
@@ -229,18 +229,20 @@ fn Chicken:lay-egg(self: Chicken) {
 fn main(argv: [String]) -> U8 {
     let c := Chicken:new();
     c:lay-egg();
+    c.eggs-laid
 } 
 ```
 
-The `:` operator has two uses, as a namespace-accessor, or alternatively as an instance-accessor.
+The `:` operator has two uses, as a namespace-accessor, or alternatively as an method-accessor.
 It is always known from context which one is meant, as Modules and Types always start with a capital letter,
 while identifiers always start with a lowercase letter.
 `Foo:bar()` (module-call) calls the `bar()` function defined in the `Foo` module.
 
 `foo:bar()` (instance-call), in the case that `foo` is of type `Foo`,
-this calls the same function, passing the variable `foo` as the first argument.
+calls a method defined in the implementation of type `Foo`, passing the variable `foo` as the first argument.
+This is similar to Rust's `&self` parameter.
 
-In the case of an instance-call, Zea will infer which function to call by infering the type of the instance variable.
+In the case of an instance-call, Fudge will infer which function to call by infering the type of the instance variable.
 You may then notice there are now two ways to operate on instances of types:
 ```
 module Foo
@@ -260,15 +262,28 @@ Foo:bar(foo);
 ```
 the use of instance-calls is encouraged.
 
-## The Type System
-Zea approaches specifying types in a manner more similar to functional Rust, where types have no modifiers,
+## Types
+Fudge approaches specifying types in a manner more similar to functional Rust, where types have no modifiers,
 instead a 'modified' type is considered a separate type.
 
 Take for instance the `unsigned` modifier in C, compared to the `I32` vs. `U32` types in Rust.
 This is done to make both the grammar of the language less ambiguous, and to make the code easier to parse for humans.
 
-Zea uses the `var: Type = value` syntax instead of the `Type var = value` syntax. This makes omitting types more pretty: `var := value`,
-and makes the grammar rule for declarations simpler.
+Fudge uses the `$var: $Type = $value` syntax instead of the `$Type $var = $value` syntax. This makes omitting types more pretty: `$var := $value`.
 
-As you might have inferred (hah, get it) from the above, Zea features type inference by a simplified Hindley Milner type system, Zea features inference without generics (yet?),
+As you might have inferred (hah, get it) from the above, Fudge features type inference by a simplified Hindley Milner type system, Fudge features inference without generics (yet?),
 which makes the type-checker simple (thank god).
+
+## Simple linkage rules
+As of right now, Fudge provides the `exports ()` block to specify public items,
+other items are private. This is likely to change in the future.
+
+The compiler does its best to ensure no namespace collisions occur, so you should be able to name your symbols whatever you want!
+
+## backend
+Fudge currently uses QBE as its backend, this is because it is easier to target than LLVM due to its simple syntax and ergonomics.
+I wanted to hack on QBE's code such that it could be called as a library,
+by constructing the IR using function calls instead of parsing a text file.
+However, QBE's source code is quite hard to read. As both a learning excercise and an effort to the community,
+I started work in an alternative implementation of QBE, this time in Rust with some added ergonomics.
+You can view my progress [here](https://github.com/SleighPenguin22/rqbe)
